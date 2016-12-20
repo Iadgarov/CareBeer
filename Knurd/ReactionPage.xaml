@@ -1,0 +1,207 @@
+﻿<Page
+    x:Class="Knurd.ReactionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Knurd"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="White" Name="screen">
+
+        <Grid.RowDefinitions>
+           
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+
+
+        </Grid.RowDefinitions>
+
+
+        <Button  x:Name="topCircle" Background="Red" Grid.Row="0"  Width="100" Height="100" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="buttonClick">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                    x:Name="ButtonBackground"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="100" Background="{TemplateBinding Background}">
+                        <Border
+                        x:Name="PressedHighlightBackground"
+                        Background="Transparent"
+                        CornerRadius="100">
+                            <ContentControl x:Name="ContentContainer"
+                            Foreground="{TemplateBinding Foreground}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Padding="{TemplateBinding Padding}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Pink" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="Red" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Black" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+
+        <Button  x:Name="centerCircle" Background="Green" Grid.Row="1"  Width="100" Height="100" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="buttonClick">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                    x:Name="ButtonBackground"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="100" Background="{TemplateBinding Background}">
+                        <Border
+                        x:Name="PressedHighlightBackground"
+                        Background="Transparent"
+                        CornerRadius="100">
+                            <ContentControl x:Name="ContentContainer"
+                            Foreground="{TemplateBinding Foreground}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Padding="{TemplateBinding Padding}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Pink" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="Green" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Black" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+
+
+
+        <Button  x:Name="bottomCircle" Background="Blue" Grid.Row="2"  Width="100" Height="100" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" Click="buttonClick">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                    x:Name="ButtonBackground"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="100" Background="{TemplateBinding Background}">
+                        <Border
+                        x:Name="PressedHighlightBackground"
+                        Background="Transparent"
+                        CornerRadius="100">
+                            <ContentControl x:Name="ContentContainer"
+                            Foreground="{TemplateBinding Foreground}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Padding="{TemplateBinding Padding}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Pink" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="Blue" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Black" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+    </Grid>
+    
+    
+
+</Page>

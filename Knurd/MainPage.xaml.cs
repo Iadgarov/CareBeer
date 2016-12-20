@@ -79,10 +79,16 @@ namespace Knurd
             {
                 loggedIn = true;
                 MainPage.user = new MobileServiceUser(credential.UserName);
+
+
+
+
             }
             updateButtons(loggedIn);
 
         }
+
+
 
         private void updateButtons(bool loggedIn)
         {
@@ -110,7 +116,7 @@ namespace Knurd
             string message;
             bool success = false;
 
-            // This sample uses the Facebook provider.
+            // This sample uses the windows provider.
             var provider = MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory;
 
             // Use the PasswordVault to securely store and access credentials.
@@ -198,13 +204,34 @@ namespace Knurd
 
         private void reactionGameButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (MainPage.user != null)
+            {
+                this.Frame.Navigate(typeof(ReactionPage));
+            }
+            else
+            {
+                notLoggedMessage();
+            }
         }
 
         private void accGraphButton_Click(object sender, RoutedEventArgs e)
         {
-         
-            this.Frame.Navigate(typeof(AccelerometerPage));
+
+            if (MainPage.user != null)
+            {
+                this.Frame.Navigate(typeof(AccelerometerPage));
+            }
+            else
+            {
+                notLoggedMessage();
+            }
+        }
+
+        private async void notLoggedMessage()
+        {
+            MessageDialog m = new MessageDialog("you must log in to proceed!");
+            await m.ShowAsync();
+
         }
     }
 }

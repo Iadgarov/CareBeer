@@ -24,6 +24,8 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
 using Windows.Devices.Sensors;
 using Windows.UI;
+using Windows.UI.Popups;
+using System.Diagnostics;
 
 #if OFFLINE_SYNC_ENABLED
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;  // offline sync
@@ -39,7 +41,7 @@ namespace Knurd
 
 
 
-        MyViewModel vm;
+        AccelerometerViewModel vm;
 
         // Sensor and dispatcher variables
         private Accelerometer _accelerometer;
@@ -89,8 +91,22 @@ namespace Knurd
             SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
             base.OnNavigatedTo(e);
 
-            vm = new MyViewModel();
+            if (Accelerometer.GetDefault() == null)
+            {
+                Debug.WriteLine("no accleromerterwsdgs");
+                noAccMessage();
+            }
+
+            vm = new AccelerometerViewModel();
             DataContext = vm;
+
+        }
+
+        private async void noAccMessage()
+        {
+            MessageDialog m = new MessageDialog("This device does not have an accelerometer!");
+            await m.ShowAsync();
+            this.Frame.GoBack();
 
         }
 

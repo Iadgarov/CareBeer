@@ -95,13 +95,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MyViewModel.cs" />
+    <Compile Include="AccelerometerViewModel.cs" />
     <Compile Include="Common\QuickStartTask.xaml.cs">
       <DependentUpon>QuickStartTask.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataModel\UserItem.cs" />
     <Compile Include="AccelerometerPage.xaml.cs">
       <DependentUpon>AccelerometerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReactionPage.xaml.cs">
+      <DependentUpon>ReactionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -134,6 +137,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="AccelerometerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ReactionPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

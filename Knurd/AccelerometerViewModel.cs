@@ -13,7 +13,7 @@ using Windows.UI.Core;
 
 namespace Knurd
 {
-    public class MyViewModel
+    public class AccelerometerViewModel
     {
         private Timer accelerometer;
 
@@ -26,7 +26,7 @@ namespace Knurd
         // Sensor and dispatcher variables
         private Accelerometer _accelerometer;
 
-        public MyViewModel()
+        public AccelerometerViewModel()
         {
             data = new ObservableCollection<MyAccelModel>();
 
