@@ -93,8 +93,11 @@ namespace Knurd
 
             if (Accelerometer.GetDefault() == null)
             {
-                Debug.WriteLine("no accleromerterwsdgs");
+                Debug.WriteLine("no accleromerter!");
+                vm = new AccelerometerViewModel();
+                vm.dummyValueSmooth();
                 noAccMessage();
+
             }
 
             vm = new AccelerometerViewModel();
@@ -112,7 +115,8 @@ namespace Knurd
 
         private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            if (this.Frame.CanGoBack) this.Frame.GoBack();
+            if (this.Frame.CanGoBack)
+                this.Frame.GoBack();
         }
 
 

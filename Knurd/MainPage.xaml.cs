@@ -54,7 +54,7 @@ namespace Knurd
             await InitLocalStoreAsync(); // offline sync
 #endif
            
-
+            
             checkLogin();
 
 
@@ -204,7 +204,8 @@ namespace Knurd
 
         private void reactionGameButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainPage.user != null)
+            if (true)
+                //MainPage.user != null)
             {
                 this.Frame.Navigate(typeof(ReactionPage));
             }
@@ -217,7 +218,8 @@ namespace Knurd
         private void accGraphButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if (MainPage.user != null)
+            if (true)
+            //MainPage.user != null)
             {
                 this.Frame.Navigate(typeof(AccelerometerPage));
             }

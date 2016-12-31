@@ -20,6 +20,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml.Media;
 using Windows.UI;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 #if OFFLINE_SYNC_ENABLED
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;  // offline sync
@@ -32,8 +33,11 @@ namespace Knurd
     {
 
         Stopwatch sw;
-        Random rn;
+        Random rand;
         int counter;
+        List<ReactionData> data; // This will contain data and be saved to cloud for sober case. 
+        private Button expected;
+
         const int FLASH_AMOUNT = 5;
 
         public ReactionPage()
@@ -53,12 +57,7 @@ namespace Knurd
 
             counter = 0;    // countes thenumber of flashes done
             sw = new Stopwatch();
-            rn = new Random();
-
-            
-
-
-
+            rand = new Random();
 
         }
 
@@ -67,12 +66,12 @@ namespace Knurd
             toggleButtonEnable();
             if (counter < FLASH_AMOUNT)
             {
-                await Task.Delay(TimeSpan.FromMilliseconds(rn.Next(500, 2000))); // delay 0.5 sec to 2
-                switch (rn.Next(1, 4))
+                await Task.Delay(TimeSpan.FromMilliseconds(rand.Next(500, 2000))); // delay 0.5 sec to 2
+                switch (rand.Next(1, 3))
                 {
-                    case 1: flashButton(topCircle); break;
-                    case 2: flashButton(centerCircle); break;
-                    case 3: flashButton(bottomCircle); break;
+                    case 1: flashButton(button1); expected = button1; break;
+                    case 2: flashButton(button2); expected = button2; break;
+                    
                 }
             }
             counter++;
@@ -93,33 +92,35 @@ namespace Knurd
         
         private void toggleButtonEnable()
         {
-            topCircle.IsEnabled = !topCircle.IsEnabled;
-            centerCircle.IsEnabled = !centerCircle.IsEnabled;
-            bottomCircle.IsEnabled = !bottomCircle.IsEnabled;
+            button1.IsEnabled = !button1.IsEnabled;
+            button2.IsEnabled = !button2.IsEnabled;
+            
         }
 
         private void buttonClick(object sender, RoutedEventArgs e)
         {
             Button b = sender as Button;
             string name = b.Name;
-            
+
+            /**
+            ReactionData d = new ReactionData();
+            d.rTime = sw.Elapsed;
+            d.isRight = b.Equals(expected);
+            data.Add(d);
+            */
             switch (name)
             {
-                case "topCircle":
+                case "button1":
                     sw.Stop();
-                    Debug.WriteLine("Red Chosen: " + sw.Elapsed);
-                    
+                    Debug.WriteLine("Button1 Chosen: " + sw.Elapsed);
+
                     break;
 
-                case "centerCircle":
+                case "button2":
                     sw.Stop();
-                    Debug.WriteLine("Green Chosen: " + sw.Elapsed);
+                    Debug.WriteLine("Button2 Chosen: " + sw.Elapsed);
                     break;
 
-                case "bottomCircle":
-                    sw.Stop();
-                    Debug.WriteLine("Blue Chosen: " + sw.Elapsed);
-                    break;
 
             }
             sw.Reset();
@@ -127,21 +128,79 @@ namespace Knurd
 
         }
 
+        private const int FLASH_DURATION = 100; // in millieseconds 
         private async void screenFlash(byte a, byte r, byte g, byte b)
         {
             sw.Start();
             screen.Background = new SolidColorBrush(Color.FromArgb(a, r, g, b));
-            await Task.Delay(TimeSpan.FromMilliseconds(50));
+            await Task.Delay(TimeSpan.FromMilliseconds(FLASH_DURATION));
             screen.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF));
         }
 
         private void flashButton(Button b)
         {
             var temp = b.Background as SolidColorBrush;
-            Debug.WriteLine("flashing " + temp.Color.ToString());
+            Debug.WriteLine("flashing " + b.Name + ". color: " + temp.Color.ToString());
             screenFlash(temp.Color.A, temp.Color.R, temp.Color.G, temp.Color.B);
             
         }
 
+        private int averageReactionTime(List<ReactionData> d)
+        {
+            int temp = 0; 
+            foreach (var t in d)
+            {
+                temp += t.rTime.Milliseconds;
+            }
+            temp /= data.Count();
+
+            return temp;
+        }
+
+        private double varianceReactionTime(List<ReactionData> d)
+        {
+            double temp = 0;
+            int mean = averageReactionTime(d);
+
+            foreach (var t in d)
+            {
+                temp += Math.Pow(t.rTime.Milliseconds - mean, 2);
+            }
+            temp /= data.Count() - 1;
+
+            return temp;
+        }
+
+        private int mistakes()
+        {
+            int temp = 0;
+            foreach (var t in data)
+            {
+                if (!t.isRight)
+                {
+                    temp++;
+                }
+            }
+            return temp;
+        }
+
+
+        private void getSoberData()
+        {
+            //TODO: method that gets list of data from cloud to be compared to. 
+        }
+
+
+
+
+
+        private class ReactionData
+        {
+            public bool isRight { get; set; }
+            public TimeSpan rTime { get; set; }
+
+        }
+
+        
     }
 }

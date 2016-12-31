@@ -6,7 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Charting="using:WinRTXamlToolkit.Controls.DataVisualization.Charting"
-        mc:Ignorable="d">
+        mc:Ignorable="d" RenderTransformOrigin="0.5,0.5">
 
     <Grid x:Name="LayoutRoot" Background="#FF0C0C0C">
 
@@ -29,16 +29,13 @@
 
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Grid.Row="2" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="10*"></RowDefinition>
+                
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="10"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Charting:Chart x:Name="chart1" Grid.Row="0"  VerticalAlignment="Stretch">
-                <Charting:LineSeries ItemsSource="{Binding Data}" 
-                             DependentValuePath ="Accel"
-                             IndependentValuePath ="TimeStamp" Margin="0"/>
-            </Charting:Chart>
-            <Button x:Name="btnStart" Content="START" Grid.Row="1" Click="btnStart_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
+            
+            <Button x:Name="btnStart" Content="START" Grid.Row="0" Click="btnStart_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
             <Button x:Name="btnStop" Content="STOP" Grid.Row="2" Click="btnStop_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
         </Grid>
         
