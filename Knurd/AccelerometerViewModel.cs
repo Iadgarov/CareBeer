@@ -79,6 +79,8 @@ namespace Knurd
             smooth(energy);
             toChuncks(smoothData);
             isolatePeaks();
+            getStrideLength();
+            getStepEnergy();
             writeDataToFile();
         }
 
