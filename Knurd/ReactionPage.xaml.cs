@@ -52,12 +52,17 @@ namespace Knurd
 #if OFFLINE_SYNC_ENABLED
             await InitLocalStoreAsync(); // offline sync
 #endif
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
+            base.OnNavigatedTo(e);
+
 
             beginMessage();
 
             counter = 0;    // countes thenumber of flashes done
             sw = new Stopwatch();
             rand = new Random();
+            data = new List<ReactionData>();
 
         }
 
@@ -74,8 +79,31 @@ namespace Knurd
                     
                 }
             }
+            else
+            {
+                button1.Content = "Done!";
+                button2.Content = "Done!";
+                button1.IsEnabled = false;
+                button2.IsEnabled = false;
+                
+                summaryMessage();
+
+            }
             counter++;
             toggleButtonEnable();
+
+        }
+
+        private async void summaryMessage()
+        {
+            string s = "Results:\n";
+            s += "reaction time mean: " + averageReactionTime(data) + "mSec \n";
+            s += "reaction time variance: " + varianceReactionTime(data) + "\n";
+            s += "reaction mistake count: " + mistakes();
+
+            MessageDialog m = new MessageDialog(s);
+            await m.ShowAsync();
+            
 
         }
 
@@ -102,12 +130,12 @@ namespace Knurd
             Button b = sender as Button;
             string name = b.Name;
 
-            /**
+            
             ReactionData d = new ReactionData();
             d.rTime = sw.Elapsed;
             d.isRight = b.Equals(expected);
             data.Add(d);
-            */
+            
             switch (name)
             {
                 case "button1":
@@ -161,7 +189,7 @@ namespace Knurd
         {
             double temp = 0;
             int mean = averageReactionTime(d);
-
+            
             foreach (var t in d)
             {
                 temp += Math.Pow(t.rTime.Milliseconds - mean, 2);
@@ -184,6 +212,11 @@ namespace Knurd
             return temp;
         }
 
+        private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+                this.Frame.GoBack();
+        }
 
         private void getSoberData()
         {

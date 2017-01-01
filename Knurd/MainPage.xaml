@@ -10,24 +10,22 @@
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-
-            <RowDefinition Height="50" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+      
 
             <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
 
-        <Button Name="marker" Height="50"  HorizontalAlignment="Center" Grid.Row="1"></Button>
-        <Button Name="login" Height="50" HorizontalAlignment="Center" Grid.Row="2" Content="LogIn" Click="DemandLogin"></Button>
-        <Button Name="logout" Height="50"  HorizontalAlignment="Center" Grid.Row="3" Content="LogOut" Click="logout_Click"></Button>
+        <Button Name="marker" Height="50" Content="CareBeer" HorizontalAlignment="Center" Grid.Row="1"></Button>
 
-        <Button Name="reactionGameButton" Height="50"  HorizontalAlignment="Center" Grid.Row="4" Content="Test Reaction time" Click="reactionGameButton_Click"></Button>
-        <Button Name="accGraphButton" Height="50"  HorizontalAlignment="Center" Grid.Row="5" Content="See acceleremoter graph" Click="accGraphButton_Click"></Button>
+
+        <Button Name="reactionGameButton" Height="50"  HorizontalAlignment="Center" Grid.Row="2" Content="Test Reaction time" Click="reactionGameButton_Click"></Button>
+        <Button Name="accGraphButton" Height="50"  HorizontalAlignment="Center" Grid.Row="3" Content="See acceleremoter graph" Click="accGraphButton_Click"></Button>
 
     </Grid>
     

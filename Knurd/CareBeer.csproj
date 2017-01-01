@@ -7,8 +7,8 @@
     <ProjectGuid>{843213BD-FBDB-43C7-8523-F6FF2293FB61}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Knurd</RootNamespace>
-    <AssemblyName>Knurd</AssemblyName>
+    <RootNamespace>CareBeer</RootNamespace>
+    <AssemblyName>CareBeer</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
@@ -97,9 +97,6 @@
     </Compile>
     <Compile Include="AccelerometerViewModel.cs" />
     <Compile Include="ListExtensions.cs" />
-    <Compile Include="Common\QuickStartTask.xaml.cs">
-      <DependentUpon>QuickStartTask.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DataModel\UserItem.cs" />
     <Compile Include="AccelerometerPage.xaml.cs">
       <DependentUpon>AccelerometerPage.xaml</DependentUpon>
@@ -119,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AccelerometerEnergyData.txt" />
+    <Content Include="Assets\careBeer.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -133,10 +131,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Common\QuickStartTask.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="AccelerometerPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -149,6 +143,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

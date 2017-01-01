@@ -95,7 +95,7 @@ namespace Knurd
             {
                 Debug.WriteLine("no accleromerter!");
                 vm = new AccelerometerViewModel();
-                vm.dummyValueSmooth();
+                //vm.dummyValueSmooth();
                 noAccMessage();
 
             }
