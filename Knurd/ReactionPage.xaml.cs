@@ -214,8 +214,12 @@ namespace Knurd
 
         private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            if (this.Frame.CanGoBack)
-                this.Frame.GoBack();
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame != null && rootFrame.CanGoBack)
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
         }
 
         private void getSoberData()

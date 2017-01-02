@@ -81,7 +81,22 @@ namespace Knurd
             isolatePeaks();
             getStrideLength();
             getStepEnergy();
-            writeDataToFile();
+            //writeDataToFile();
+        }
+
+        public int getStepCount()
+        {
+            return stepEnergy.Count;
+        }
+
+        public double getStrideLengthVariance()
+        {
+            return strideLenghts.Variance();
+        }
+
+        public double getStepEnergyVariance()
+        {
+            return stepEnergy.Variance();
         }
 
         public async void dummyValueSmooth()
@@ -253,7 +268,7 @@ namespace Knurd
             for (i = windowSize / 2; i < (from.Count) - windowSize / 2; i++)
             {
                 //don't touch extreme points (which propably represent the step)
-                if (from.ElementAt(i) > peakThreshold)
+                if (from.ElementAt(i) > peakThreshold || from.ElementAt(i) < peakThreshold - 0.5)
                 {
                     addToMyAccelModelCollection(smoothData, from.ElementAt(i));
                 }
@@ -371,7 +386,8 @@ namespace Knurd
             List<double> findThese = new List<double>();
             foreach (List<double> l in high)
             {
-                findThese.Add(l.Max());
+                if (l.Max() >= peakThreshold)
+                    findThese.Add(l.Max());
                 
             }
 

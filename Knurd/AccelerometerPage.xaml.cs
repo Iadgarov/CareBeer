@@ -100,6 +100,7 @@ namespace Knurd
 
             }
 
+            btnStop.IsEnabled = false;
             vm = new AccelerometerViewModel();
             DataContext = vm;
 
@@ -115,20 +116,46 @@ namespace Knurd
 
         private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            if (this.Frame.CanGoBack)
-                this.Frame.GoBack();
+
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame != null && rootFrame.CanGoBack)
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
+
+
         }
 
 
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
+            btnStart.IsEnabled = false;
+            btnStop.IsEnabled = true;
             vm.Start();
         }
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
+            btnStart.IsEnabled = true;
+            btnStop.IsEnabled = false;
             vm.Stop();
+            summaryMessage();
+            // TODO: clear VM data here, otherwise next reading will be effected. 
+        }
+
+
+        private async void summaryMessage()
+        {
+
+            string s = "";
+            s += "Step Count: " + vm.getStepCount();
+
+            MessageDialog m = new MessageDialog(s);
+            await m.ShowAsync();
+
+
         }
 
 
