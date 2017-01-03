@@ -28,8 +28,10 @@ namespace Knurd
         private List<double> smoothData; // energy data after smoothing
         private List<List<double>> high; // smooth data in chuncks with values above avg
         private List<List<double>> low; // smooth data in chuncks with values bellow avg
-        private List<double> peaks; // peaks in energy, one per step
+        private List<double> max_points; // peaks in energy, one per step, rest of values are 0
+        private List<double> min_points; // peaks in energy, one per step, rest of values are 0
         private List<double> strideLenghts; // length in sample counts
+        private List<Tuple<double, double>> stepPkPk; // peak to pleak for steps (min, max). 
         private List<double> stepEnergy; // the peak values alone, none of the other samples.  
 
         private int samplePeriod = 10; // mSec
@@ -37,6 +39,8 @@ namespace Knurd
         private const int topSamples = 20; //choosing the number of top samples in accelerometrt
         private const int windowSize = 12; //determine window's size for smoothing data calculation
         private const double peakThreshold = 1.2; //value was chosen for walking test with phone in hand. TODO - calibrate for pocket. 
+
+        private double mean = -1;
 
 
         // Sensor and dispatcher variables
@@ -197,7 +201,16 @@ namespace Knurd
             */
             writeMe += ";";
             temp = false;
-            foreach (double x in peaks)
+            foreach (double x in max_points)
+            {
+
+                writeMe += (!temp ? "" : ", ") + x.ToString();
+                temp = true;
+            }
+
+            writeMe += ";";
+            temp = false;
+            foreach (double x in min_points)
             {
 
                 writeMe += (!temp ? "" : ", ") + x.ToString();
@@ -309,6 +322,7 @@ namespace Knurd
         private void toChuncks(List<double> l)
         {
             double avg = l.Average();
+            mean = avg;
 
             high = new List<List<double>>(); // sections that are above the avg
             low = new List<List<double>>(); // setions below the avg
@@ -370,10 +384,11 @@ namespace Knurd
                         low.Add(_l);
                 }
 
-                _l.Add(l.ElementAt(i));
+                _l.Add(energy.ElementAt(i));
             }
 
             Debug.WriteLine("high len: "+ high.Count);
+            Debug.WriteLine("low len: " + low.Count);
 
         }
 
@@ -381,33 +396,48 @@ namespace Knurd
         private void isolatePeaks()
         {
 
-            peaks = new List<double>();
+            max_points = new List<double>();
+            min_points = new List<double>();
 
-            List<double> findThese = new List<double>();
+            List<double> findThese_max = new List<double>();
+            List<double> findThese_min = new List<double>();
+
+
             foreach (List<double> l in high)
             {
                 if (l.Max() >= peakThreshold)
-                    findThese.Add(l.Max());
-                
+                    findThese_max.Add(l.Max());              
             }
 
-            int i = 0;
-            
 
-            Debug.WriteLine("max points amount: " + findThese.Count);
+            foreach (List<double> l in low)
+            {
+                if (l.Min() <= mean - 0.1 )
+                    findThese_min.Add(l.Min());
+            }
+
+            Debug.WriteLine("max points amount: " + findThese_max.Count);
             foreach(double d in energy)
             {
-                if (findThese.Contains(d))
+                if (findThese_max.Contains(d))
                 {
-                    Debug.WriteLine(d);
-                    i++;
-                    peaks.Add(d);
+                    max_points.Add(d);
                 }
                 else
                 {
-                    peaks.Add(0);
+                    max_points.Add(0);
                 }
-                
+
+
+                if (findThese_min.Contains(d))
+                {
+                    min_points.Add(d);
+                }
+                else
+                {
+                    min_points.Add(0);
+                }
+
             }
 
         }
@@ -420,9 +450,9 @@ namespace Knurd
             bool start = false;
             strideLenghts = new List<double>();
 
-            for (int i = 0; i < peaks.Count; i++)
+            for (int i = 0; i < max_points.Count; i++)
             {
-                if (peaks.ElementAt(i) > 0)
+                if (max_points.ElementAt(i) > 0)
                 {
                     if (start)
                     {
@@ -439,11 +469,29 @@ namespace Knurd
         private void getStepEnergy()
         {
             stepEnergy = new List<double>();
-            for (int i = 0; i < peaks.Count; i++)
+            stepPkPk = new List<Tuple<double, double>>();
+
+            List<double> pureMin = min_points.Where(i => i != 0).ToList();
+            List<double> pureMax = max_points.Where(i => i != 0).ToList();
+
+            // make sure we have at least as many mins as maxs 
+            while (pureMin.Count < pureMax.Count)
             {
-                if (peaks.ElementAt(i) > 0)
+                pureMax.RemoveAt(pureMax.Count - 1);
+            }
+
+            var zipped = pureMin.Zip(pureMax, (first, second) => new Tuple<double, double>(first, second));
+            foreach (Tuple<double, double> t in zipped)
+            {
+                stepPkPk.Add(t);
+            }
+
+            for (int i = 0; i < stepPkPk.Count; i++)
+            {
+                if (stepPkPk.ElementAt(i).Item2 > 0)
                 {
-                    stepEnergy.Add(peaks.ElementAt(i));
+                    stepEnergy.Add(stepPkPk.ElementAt(i).Item2 - stepPkPk.ElementAt(i).Item1);
+                    Debug.Write(stepPkPk.ElementAt(i).ToString());
                 }
                 
             }
