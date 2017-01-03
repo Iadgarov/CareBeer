@@ -46,22 +46,6 @@ namespace Knurd
         // Sensor and dispatcher variables
         private Accelerometer _accelerometer;
 
-        // This event handler writes the current accelerometer reading to 
-        // the three acceleration text blocks on the app' s main page.
-
-        private async void ReadingChanged(object sender, AccelerometerReadingChangedEventArgs e)
-        {
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                AccelerometerReading reading = e.Reading;
-                txtXAxis.Text = String.Format("{0,5:0.00}", reading.AccelerationX);
-                txtYAxis.Text = String.Format("{0,5:0.00}", reading.AccelerationY);
-                txtZAxis.Text = String.Format("{0,5:0.00}", reading.AccelerationZ);
-
-            });
-        }
-
-
 
         public AccelerometerPage()
         {
@@ -74,9 +58,6 @@ namespace Knurd
                 uint minReportInterval = _accelerometer.MinimumReportInterval;
                 uint reportInterval = minReportInterval > 16 ? minReportInterval : 16;
                 _accelerometer.ReportInterval = reportInterval;
-
-                // Assign an event handler for the reading-changed event
-                _accelerometer.ReadingChanged += new TypedEventHandler<Accelerometer, AccelerometerReadingChangedEventArgs>(ReadingChanged);
             }
         }
 
@@ -133,16 +114,21 @@ namespace Knurd
         {
             btnStart.IsEnabled = false;
             btnStop.IsEnabled = true;
+
             vm.Start();
         }
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
+            vm.inUse = true;
             btnStart.IsEnabled = true;
             btnStop.IsEnabled = false;
             vm.Stop();
+            while (vm.inUse) ; // wait for saving to be completed then erase data 
             summaryMessage();
-            // TODO: clear VM data here, otherwise next reading will be effected. 
+            
+            vm = new AccelerometerViewModel(); // fresh dataset for future test. by now things should have been saved.  
+            Debug.WriteLine("!!!");
         }
 
 

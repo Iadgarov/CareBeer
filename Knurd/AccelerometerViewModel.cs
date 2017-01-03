@@ -42,12 +42,15 @@ namespace Knurd
 
         private double mean = -1;
 
+        public bool inUse = true; // so long as true this model will no be reset (becomes false once data is saved, tocloud or otherwise)
+
 
         // Sensor and dispatcher variables
         private Accelerometer _accelerometer;
 
         public AccelerometerViewModel()
         {
+            inUse = true; 
             data = new ObservableCollection<AccelerometerReading>();
             energy = new List<double>();
             smoothData = new List<double>();
@@ -85,7 +88,9 @@ namespace Knurd
             isolatePeaks();
             getStrideLength();
             getStepEnergy();
-            //writeDataToFile();
+
+            updateUser();
+            
         }
 
         public int getStepCount()
@@ -129,7 +134,7 @@ namespace Knurd
             getStepEnergy();
 
 
-            strideLenghts.Add(1);
+            //strideLenghts.Add(1);
             foreach (double d in strideLenghts)
                 Debug.Write(d + ", ");
 
@@ -217,6 +222,7 @@ namespace Knurd
                 temp = true;
             }
 
+           
             var savePicker = new Windows.Storage.Pickers.FileSavePicker();
             savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
 
@@ -224,6 +230,10 @@ namespace Knurd
             savePicker.SuggestedFileName = "AccelerometerEnergyData";
 
             Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+
+            
+           
+
             if (file != null)
             {
                 // Prevent updates to the remote version of the file until
@@ -238,8 +248,13 @@ namespace Knurd
                     await Windows.Storage.CachedFileManager.CompleteUpdatesAsync(file);
 
             }
+            else
+            {
+                Debug.WriteLine("file is null");
+            }
+            inUse = false; // we have all the data we need in the string, go ahead and clear the object. 
 
-
+            Debug.WriteLine("qqq:" );
 
 
         }
@@ -256,15 +271,6 @@ namespace Knurd
                 });
         }
 
-
-        // takes accelerometer data at this moment (x,y,z) and returns the energy (root of sum of a^2 for a= x,y,z)
-        private double getAccelerationEnergy()
-        {
-            AccelerometerReading reading = _accelerometer.GetCurrentReading();
-            double temp = Math.Pow(Math.Pow(reading.AccelerationX, 2) + Math.Pow(reading.AccelerationY, 2) + Math.Pow(reading.AccelerationZ, 2), 0.5);
-            return temp;
-
-        }
 
 
         //Using moving average to create smoother data(from the data collected by the accel.)
@@ -498,7 +504,26 @@ namespace Knurd
 
         }
 
-
+        private void updateUser()
+        {
+            User u = MainPage.user;
+            if (u.step_baslineExists)
+            {
+                u.energyList = User.listToString(energy);
+                u.maxPoints = User.listToString(max_points);
+                u.minPoints = User.listToString(min_points);
+                u.stepAmplitude = User.listToString(stepEnergy);
+                u.strideLength = User.listToString(strideLenghts);
+            }
+            else
+            {
+                u.B_energyList = User.listToString(energy);
+                u.B_maxPoints = User.listToString(max_points);
+                u.B_minPoints = User.listToString(min_points);
+                u.B_stepAmplitude = User.listToString(stepEnergy);
+                u.B_strideLength = User.listToString(strideLenghts);
+            }
+        }
 
 
 

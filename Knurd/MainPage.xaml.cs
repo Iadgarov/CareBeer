@@ -17,8 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Linq;
 using Windows.Security.Credentials;
 using Windows.UI.Core;
-
-
+using System.Diagnostics;
 
 namespace Knurd
 {
@@ -27,15 +26,20 @@ namespace Knurd
 
 
         // Define a member variable for storing the signed-in user. 
-        public static MobileServiceUser user = null;
+        public static User user = null; // holds the current user
+       
 
         public static MainPage Current;
 
         public MainPage()
         {
             this.InitializeComponent();
-
             Current = this;
+
+            //CloudServices.createTableStorage();
+            //CloudServices.insertEntity("David", "123");
+           
+            
 
         }
 

@@ -2,6 +2,7 @@
   "dependencies": {
     "Microsoft.Azure.Mobile.Client": "3.0.3",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "WindowsAzure.Storage": "8.0.0",
     "WinRTXamlToolkit.Controls.DataVisualization": "2.0.0",
     "WinRTXamlToolkit.UWP": "2.0.0"
   },

@@ -87,6 +87,7 @@ namespace Knurd
                 button2.IsEnabled = false;
                 
                 summaryMessage();
+                //CloudServices.replaceIneEntity(MainPage.user);
 
             }
             counter++;
@@ -227,7 +228,22 @@ namespace Knurd
             //TODO: method that gets list of data from cloud to be compared to. 
         }
 
-
+        private void updateUser()
+        {
+            User u = MainPage.user;
+            if (u.reaction_baslineExists)
+            {
+                u.reaction_mean = averageReactionTime(data);
+                u.reaction_mistakes = mistakes();
+                u.reaction_variance = varianceReactionTime(data);
+            }
+            else
+            {
+                u.B_reaction_mean = averageReactionTime(data);
+                u.B_reaction_mistakes = mistakes();
+                u.B_reaction_variance = varianceReactionTime(data);
+            }
+        }
 
 
 

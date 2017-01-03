@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AccelerometerViewModel.cs" />
+    <Compile Include="CloudServices.cs" />
     <Compile Include="ListExtensions.cs" />
     <Compile Include="DataModel\UserItem.cs" />
     <Compile Include="AccelerometerPage.xaml.cs">
