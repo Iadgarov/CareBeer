@@ -90,6 +90,8 @@ namespace Knurd
             getStepEnergy();
 
             updateUser();
+
+            
             
         }
 
@@ -108,6 +110,7 @@ namespace Knurd
             return stepEnergy.Variance();
         }
 
+        // for debug only
         public async void dummyValueSmooth()
         {
 
@@ -506,7 +509,7 @@ namespace Knurd
 
         private void updateUser()
         {
-            User u = MainPage.user;
+            User u = EntryPage.user;
             if (u.step_baslineExists)
             {
                 u.energyList = User.listToString(energy);

@@ -11,16 +11,75 @@
 
         <Grid.RowDefinitions>
             
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            
 
 
         </Grid.RowDefinitions>
 
+        <TextBlock Name="instructions" FontSize="14" TextWrapping="Wrap">
+            When ready press 'Start' and begin walking. After approximately 50 steps of normal walking click 'Stop'</TextBlock>
+        <Button  x:Name="startStopButton" Content="Start" FontSize="80" Background="#FFE8831D" Grid.Row="1"  Width="300" Height="300" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btn_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                    x:Name="ButtonBackground"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="300" Background="{TemplateBinding Background}">
+                        <Border
+                        x:Name="PressedHighlightBackground"
+                        Background="Transparent"
+                        CornerRadius="300">
+                            <ContentControl x:Name="ContentContainer"
+                            Foreground="{TemplateBinding Foreground}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Padding="{TemplateBinding Padding}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Pink" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="Red" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Black" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
 
-        <Button x:Name="btnStart" Content="START" Grid.Row="0" Click="btnStart_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
-        <Button x:Name="btnStop" Content="STOP" Grid.Row="2" Click="btnStop_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+       
      
         
     </Grid>

@@ -38,7 +38,7 @@ namespace Knurd
         List<ReactionData> data; // This will contain data and be saved to cloud for sober case. 
         private Button expected;
 
-        const int FLASH_AMOUNT = 5;
+        const int FLASH_AMOUNT = 1;
 
         public ReactionPage()
         {
@@ -52,11 +52,7 @@ namespace Knurd
 #if OFFLINE_SYNC_ENABLED
             await InitLocalStoreAsync(); // offline sync
 #endif
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
-            base.OnNavigatedTo(e);
-
-
+        
             beginMessage();
 
             counter = 0;    // countes thenumber of flashes done
@@ -87,7 +83,9 @@ namespace Knurd
                 button2.IsEnabled = false;
                 
                 summaryMessage();
-                //CloudServices.replaceIneEntity(MainPage.user);
+                await CloudServices.replaceIneEntity(EntryPage.user);
+                
+                return;
 
             }
             counter++;
@@ -213,15 +211,6 @@ namespace Knurd
             return temp;
         }
 
-        private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame != null && rootFrame.CanGoBack)
-            {
-                e.Handled = true;
-                rootFrame.GoBack();
-            }
-        }
 
         private void getSoberData()
         {
@@ -230,7 +219,7 @@ namespace Knurd
 
         private void updateUser()
         {
-            User u = MainPage.user;
+            User u = EntryPage.user;
             if (u.reaction_baslineExists)
             {
                 u.reaction_mean = averageReactionTime(data);

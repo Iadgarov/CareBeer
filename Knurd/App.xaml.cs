@@ -48,6 +48,7 @@ namespace Knurd
             }
 #endif
 
+            //Frame rootFrame = Window.Current.Content as Frame;
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -68,18 +69,35 @@ namespace Knurd
                 Window.Current.Content = rootFrame;
             }
 
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            SystemNavigationManager.GetForCurrentView().BackRequested += App.App_BackRequested;
+
             if (rootFrame.Content == null)
             {
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                rootFrame.Navigate(typeof(EntryPage), e.Arguments);
             }
             // Ensure the current window is active
             Window.Current.Activate();
 
             
         }
+
+
+        public static void App_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame != null && rootFrame.CanGoBack)
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
+        }
+
+
 
 
 

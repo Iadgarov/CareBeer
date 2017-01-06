@@ -43,9 +43,11 @@ namespace Knurd
 
         AccelerometerViewModel vm;
 
+
         // Sensor and dispatcher variables
         private Accelerometer _accelerometer;
 
+        private bool start = true;
 
         public AccelerometerPage()
         {
@@ -68,9 +70,7 @@ namespace Knurd
 #if OFFLINE_SYNC_ENABLED
             await InitLocalStoreAsync(); // offline sync
 #endif
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
-            base.OnNavigatedTo(e);
+     
 
             if (Accelerometer.GetDefault() == null)
             {
@@ -81,10 +81,22 @@ namespace Knurd
 
             }
 
-            btnStop.IsEnabled = false;
+
             vm = new AccelerometerViewModel();
             DataContext = vm;
 
+        }
+
+        private void startMode()
+        {
+            start = true;
+            startStopButton.Content = "Start";
+        }
+
+        private void stopMode()
+        {
+            start = false;
+            startStopButton.Content = "Stop";
         }
 
         private async void noAccMessage()
@@ -95,40 +107,40 @@ namespace Knurd
 
         }
 
-        private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
+
+
+
+        private void btn_Click(object sender, RoutedEventArgs e)
         {
 
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame != null && rootFrame.CanGoBack)
+            if (start)
             {
-                e.Handled = true;
-                rootFrame.GoBack();
+                btnStart_Click();
             }
-
-
+            else
+            {
+                btnStop_Click();
+            }
         }
 
 
-
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        private void btnStart_Click()
         {
-            btnStart.IsEnabled = false;
-            btnStop.IsEnabled = true;
 
+            stopMode();
             vm.Start();
         }
 
-        private void btnStop_Click(object sender, RoutedEventArgs e)
+        private async void btnStop_Click()
         {
-            vm.inUse = true;
-            btnStart.IsEnabled = true;
-            btnStop.IsEnabled = false;
-            vm.Stop();
-            while (vm.inUse) ; // wait for saving to be completed then erase data 
-            summaryMessage();
             
-            vm = new AccelerometerViewModel(); // fresh dataset for future test. by now things should have been saved.  
-            Debug.WriteLine("!!!");
+            vm.Stop();
+            summaryMessage();
+            await CloudServices.replaceIneEntity(EntryPage.user);
+
+            vm = new AccelerometerViewModel(); // fresh dataset for future test. by now things should have been saved. 
+
+            startMode();
         }
 
 

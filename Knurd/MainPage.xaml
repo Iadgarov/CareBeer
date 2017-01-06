@@ -7,11 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+   
+
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="10*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -21,11 +23,76 @@
 
         </Grid.RowDefinitions>
 
-        <Button Name="marker" Height="50" Content="CareBeer" HorizontalAlignment="Center" Grid.Row="1"></Button>
+        <Image Source="Images/CareBeerLogo_fancy2.png" Grid.Row="6" VerticalAlignment="Bottom"/>
+        <TextBlock Name="marker" Height="50" HorizontalAlignment="Center" Grid.Row="0"></TextBlock>
 
+        <Button  x:Name="beginButton" Content="Begin" FontSize="80" Background="#FF6D3670" Grid.Row="1"  Width="300" Height="300" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="begin_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                    x:Name="ButtonBackground"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="300" Background="{TemplateBinding Background}">
+                        <Border
+                        x:Name="PressedHighlightBackground"
+                        Background="Transparent"
+                        CornerRadius="300">
+                            <ContentControl x:Name="ContentContainer"
+                            Foreground="{TemplateBinding Foreground}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Padding="{TemplateBinding Padding}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Pink" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="Red" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Black" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        
+        
 
         <Button Name="reactionGameButton" Height="50"  HorizontalAlignment="Center" Grid.Row="2" Content="Test Reaction time" Click="reactionGameButton_Click"></Button>
         <Button Name="accGraphButton" Height="50"  HorizontalAlignment="Center" Grid.Row="3" Content="See acceleremoter graph" Click="accGraphButton_Click"></Button>
+        <Button Name="changeUser" Height="50"  HorizontalAlignment="Center" Grid.Row="4" Content="Switch Users" Click="changeUser_Click"></Button>
+
+
+
 
     </Grid>
     

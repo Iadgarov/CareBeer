@@ -9,8 +9,13 @@ namespace Knurd
     public class User : TableEntity
     {
 
+        public User() { }
+
         public User(string userName, string password)
         {
+            this.userName = userName;
+            this.password = password;
+
             this.PartitionKey = password;
             this.RowKey = userName;
 
@@ -102,6 +107,7 @@ namespace Knurd
             foreach (double item in l)
             {
                 s += first ? item.ToString() : "," + item.ToString();
+                first = false;
             }
             return s;
         }
@@ -116,6 +122,11 @@ namespace Knurd
                 l.Add(double.Parse(item));
             }
             return l;
+        }
+
+        public bool isSetUp()
+        {
+            return this.reaction_baslineExists && this.speech_baslineExists && this.step_baslineExists;
         }
 
     }
