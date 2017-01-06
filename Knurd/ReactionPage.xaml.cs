@@ -38,7 +38,7 @@ namespace Knurd
         List<ReactionData> data; // This will contain data and be saved to cloud for sober case. 
         private Button expected;
 
-        const int FLASH_AMOUNT = 1;
+        const int FLASH_AMOUNT = 10;
 
         public ReactionPage()
         {
@@ -83,6 +83,7 @@ namespace Knurd
                 button2.IsEnabled = false;
                 
                 summaryMessage();
+                updateUser();
                 await CloudServices.replaceIneEntity(EntryPage.user);
                 
                 return;
@@ -126,30 +127,18 @@ namespace Knurd
 
         private void buttonClick(object sender, RoutedEventArgs e)
         {
+
+            sw.Stop();
+
             Button b = sender as Button;
             string name = b.Name;
 
             
             ReactionData d = new ReactionData();
-            d.rTime = sw.Elapsed;
+            d.rTime = sw.ElapsedMilliseconds;
             d.isRight = b.Equals(expected);
             data.Add(d);
-            
-            switch (name)
-            {
-                case "button1":
-                    sw.Stop();
-                    Debug.WriteLine("Button1 Chosen: " + sw.Elapsed);
-
-                    break;
-
-                case "button2":
-                    sw.Stop();
-                    Debug.WriteLine("Button2 Chosen: " + sw.Elapsed);
-                    break;
-
-
-            }
+           
             sw.Reset();
             flash();
 
@@ -172,12 +161,12 @@ namespace Knurd
             
         }
 
-        private int averageReactionTime(List<ReactionData> d)
+        private long averageReactionTime(List<ReactionData> d)
         {
-            int temp = 0; 
+            long temp = 0; 
             foreach (var t in d)
             {
-                temp += t.rTime.Milliseconds;
+                temp += t.rTime;
             }
             temp /= data.Count();
 
@@ -187,11 +176,11 @@ namespace Knurd
         private double varianceReactionTime(List<ReactionData> d)
         {
             double temp = 0;
-            int mean = averageReactionTime(d);
+            long mean = averageReactionTime(d);
             
             foreach (var t in d)
             {
-                temp += Math.Pow(t.rTime.Milliseconds - mean, 2);
+                temp += Math.Pow(t.rTime - mean, 2);
             }
             temp /= data.Count() - 1;
 
@@ -239,7 +228,7 @@ namespace Knurd
         private class ReactionData
         {
             public bool isRight { get; set; }
-            public TimeSpan rTime { get; set; }
+            public long rTime { get; set; }
 
         }
 
