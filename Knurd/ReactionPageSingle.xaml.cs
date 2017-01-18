@@ -17,18 +17,17 @@ using System.Collections.Generic;
 
 namespace Knurd
 {
-    public sealed partial class ReactionPage : Page
+    public sealed partial class ReactionPageSingle : Page
     {
 
         Stopwatch sw;
         Random rand;
         int counter;
         List<ReactionData> data; // This will contain data and be saved to cloud for sober case. 
-        private Button expected;
 
         const int FLASH_AMOUNT = 10;
 
-        public ReactionPage()
+        public ReactionPageSingle()
         {
 
             this.InitializeComponent();
@@ -45,8 +44,8 @@ namespace Knurd
         private void reset()
         {
             beginMessage();
-            button1.IsEnabled = true;   button1.Content = "";
-            button2.IsEnabled = true;   button2.Content = "";
+            button1.IsEnabled = true;
+            button1.Content = "";
             counter = 0;    // countes thenumber of flashes done
             sw = new Stopwatch();
             rand = new Random();
@@ -59,25 +58,17 @@ namespace Knurd
             if (counter < FLASH_AMOUNT)
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(rand.Next(500, 2000))); // delay 0.5 sec to 2
-                switch (rand.Next(1, 3))
-                {
-                    case 1: flashButton(button1); expected = button1; break;
-                    case 2: flashButton(button2); expected = button2; break;
-                    
-                }
+                flashButton(button1);
             }
             else
             {
                 button1.Content = "Done!";
-                button2.Content = "Done!";
                 button1.IsEnabled = false;
-                button2.IsEnabled = false;
-                
+    
                 
                 updateUser();
                 await CloudServices.replaceIneEntity(EntryPage.user);
                 summaryMessage();
-
                 return;
 
             }
@@ -91,8 +82,6 @@ namespace Knurd
             string s = "Results:\n";
             s += "reaction time mean: " + averageReactionTime(data) + "mSec \n";
             s += "reaction time variance: " + varianceReactionTime(data) + "\n";
-            s += "reaction mistake count: " + mistakes();
-
 
             MessageDialog m = new MessageDialog(s);
             m.Commands.Add(new UICommand("Next"));
@@ -103,14 +92,12 @@ namespace Knurd
 
             if (r.Label == "Next")
             {
-                this.Frame.Navigate(typeof(AccelerometerPage));
+                this.Frame.Navigate(typeof(ReactionPage));
             }
             else if (r.Label == "Redo")
             {
                 reset();
             }
-
-          
             
 
         }
@@ -118,7 +105,7 @@ namespace Knurd
 
         private async void beginMessage()
         {
-            MessageDialog m = new MessageDialog("When the screen flashes, choose the correct button quickly. Ready?");
+            MessageDialog m = new MessageDialog("When the screen flashes you must press the button. Ready?");
             m.Commands.Add(new UICommand("Yes!"));
             await m.ShowAsync();
             flash();
@@ -129,7 +116,6 @@ namespace Knurd
         private void toggleButtonEnable()
         {
             button1.IsEnabled = !button1.IsEnabled;
-            button2.IsEnabled = !button2.IsEnabled;
             
         }
 
@@ -144,7 +130,7 @@ namespace Knurd
             
             ReactionData d = new ReactionData();
             d.rTime = sw.ElapsedMilliseconds;
-            d.isRight = b.Equals(expected);
+            d.isRight = b.Equals(button1);
             data.Add(d);
            
             sw.Reset();
@@ -195,20 +181,7 @@ namespace Knurd
             return temp;
         }
 
-        private int mistakes()
-        {
-            int temp = 0;
-            foreach (var t in data)
-            {
-                if (!t.isRight)
-                {
-                    temp++;
-                }
-            }
-            return temp;
-        }
-
-
+   
         private void getSoberData()
         {
             //TODO: method that gets list of data from cloud to be compared to. 
@@ -217,22 +190,18 @@ namespace Knurd
         private void updateUser()
         {
             User u = EntryPage.user;
-            if (u.reaction_baslineExists)
+            if (u.reactionSingle_baslineExists)
             {
-                u.reaction_mean = averageReactionTime(data);
-                u.reaction_mistakes = mistakes();
-                u.reaction_variance = varianceReactionTime(data);
+                u.reactionSingle_mean = averageReactionTime(data);
+                u.reactionSingle_variance = varianceReactionTime(data);
             }
             else
             {
-                u.B_reaction_mean = averageReactionTime(data);
-                u.B_reaction_mistakes = mistakes();
-                u.B_reaction_variance = varianceReactionTime(data);
-                u.reaction_baslineExists = true;
+                u.B_reactionSingle_mean = averageReactionTime(data);
+                u.B_reactionSingle_variance = varianceReactionTime(data);
+                u.reactionSingle_baslineExists = true;
             }
         }
-
-
 
         private class ReactionData
         {

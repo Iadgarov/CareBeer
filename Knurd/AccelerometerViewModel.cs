@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Devices.Sensors;
-using Windows.Foundation;
-using Windows.Storage;
+
 using Windows.UI.Core;
 
 namespace Knurd
@@ -20,11 +16,13 @@ namespace Knurd
         private Timer accelerometer;
 
 
-        private ObservableCollection<AccelerometerReading> data;
-       
-        public ObservableCollection<AccelerometerReading> stepMoments;
+        private ObservableCollection<AccelerometerReading> acc_data;
+        private ObservableCollection<GyrometerReading> gyr_data;
 
-        private List<double> energy; // energy values at every accelerometer sample point
+        //public ObservableCollection<AccelerometerReading> stepMoments;
+
+        private List<double> acc_energy; // energy values at every accelerometer sample point
+        private List<double> gyr_energy; // energy values at every accelerometer sample point
         private List<double> smoothData; // energy data after smoothing
         private List<List<double>> high; // smooth data in chuncks with values above avg
         private List<List<double>> low; // smooth data in chuncks with values bellow avg
@@ -38,22 +36,28 @@ namespace Knurd
 
         private const int topSamples = 20; //choosing the number of top samples in accelerometrt
         private const int windowSize = 12; //determine window's size for smoothing data calculation
-        private const double peakThreshold = 1.2; //value was chosen for walking test with phone in hand. TODO - calibrate for pocket. 
+        private const double peakThreshold = 1.1; //value was chosen for walking test with phone in hand. TODO - calibrate for pocket. 
+        private const double noiseThreshold = 0.1; //changes below this will be dismissed. 
 
         private double mean = -1;
 
-        public bool inUse = true; // so long as true this model will no be reset (becomes false once data is saved, tocloud or otherwise)
+        public bool running = false; 
 
+        private static Mutex mutx = new Mutex();
 
         // Sensor and dispatcher variables
         private Accelerometer _accelerometer;
+        private Gyrometer _gyrometer;
 
         public AccelerometerViewModel()
         {
-            inUse = true; 
-            data = new ObservableCollection<AccelerometerReading>();
-            energy = new List<double>();
+            
+            acc_data = new ObservableCollection<AccelerometerReading>();
+            acc_energy = new List<double>();
             smoothData = new List<double>();
+
+            gyr_data = new ObservableCollection<GyrometerReading>();
+            gyr_energy = new List<double>();
 
 
             _accelerometer = Accelerometer.GetDefault();
@@ -64,33 +68,61 @@ namespace Knurd
                 uint minReportInterval = _accelerometer.MinimumReportInterval;
                 uint reportInterval = minReportInterval > 16 ? minReportInterval : 16;
                 _accelerometer.ReportInterval = reportInterval;
-
-                // Assign an event handler for the reading-changed event
-                //_accelerometer.ReadingChanged += new TypedEventHandler<Accelerometer, AccelerometerReadingChangedEventArgs>(ReadingChanged);
             }
-     
+
+            _gyrometer = Gyrometer.GetDefault();
+
+            if (_gyrometer != null)
+            {
+                // Establish the report interval
+                uint minReportInterval = _gyrometer.MinimumReportInterval;
+                uint reportInterval = minReportInterval > 16 ? minReportInterval : 16;
+                _gyrometer.ReportInterval = reportInterval;
+            }
+
         }
 
         public void Start()
         {
+            mutx.WaitOne();
+            if (running)
+            {
+                mutx.ReleaseMutex();
+                return;
+            }
+            
+            running = true;
+            mutx.ReleaseMutex();
 
-            accelerometer = new Timer(AccelDataCallback, null, 100, samplePeriod); // last parameter is how often to take measurment, in mSec
+            accelerometer = new Timer(collectData, null, 100, samplePeriod); // last parameter is how often to take measurment, in mSec
+           
         }
 
-        public void Stop()
+        public bool Stop()
         {
+            mutx.WaitOne();
+            if (!running)
+            {
+                mutx.ReleaseMutex();
+                return false; // failed stop, already stopped
+            }
+
+            running = false;
+            mutx.ReleaseMutex();
 
             accelerometer.Dispose();
 
             dataToEnergy();
-            smooth(energy);
+            smooth(acc_energy);
             toChuncks(smoothData);
             isolatePeaks();
             getStrideLength();
             getStepEnergy();
 
-            updateUser();
+            Debug.WriteLine(acc_energy.Count);
 
+            updateUser();
+            return true;
             
             
         }
@@ -110,166 +142,40 @@ namespace Knurd
             return stepEnergy.Variance();
         }
 
-        // for debug only
-        public async void dummyValueSmooth()
-        {
-
-            string s = "";
-            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///AccelerometerEnergyData.txt"));
-            using (var inputStream = await file.OpenReadAsync())
-            using (var classicStream = inputStream.AsStreamForRead())
-            using (var streamReader = new StreamReader(classicStream))
-            {
-                while (streamReader.Peek() >= 0)
-                {
-                   s += streamReader.ReadLine();
-                }
-            }
-               
-            energy = s.Split(';')[0].Split(',').Select(double.Parse).ToList();
-            //smoothData = s.Split(';')[1].Split(',').Select(double.Parse).ToList();
-
-            dataToEnergy();
-            smooth(energy);
-            toChuncks(smoothData);
-            isolatePeaks();
-            getStrideLength();
-            getStepEnergy();
-
-
-            //strideLenghts.Add(1);
-            foreach (double d in strideLenghts)
-                Debug.Write(d + ", ");
-
-            Debug.WriteLine("stride length mean in sample count. Sample every 10 mSec: " + strideLenghts.Mean());
-            Debug.WriteLine("stride length variance: " + strideLenghts.Variance());
-            
-            Debug.WriteLine("step energy mean: " + stepEnergy.Mean());
-            Debug.WriteLine("step energy variance: " + stepEnergy.Variance());
-
-            writeDataToFile();
-            
-        }
+      
 
         private void dataToEnergy()
         {
-            foreach (AccelerometerReading r in data)
+            foreach (AccelerometerReading r in acc_data)
             {
-
-                energy.Add(Math.Pow(Math.Pow(r.AccelerationX, 2) + Math.Pow(r.AccelerationY, 2) + Math.Pow(r.AccelerationZ, 2), 0.5));
-
+                acc_energy.Add(Math.Pow(Math.Pow(r.AccelerationX, 2) + Math.Pow(r.AccelerationY, 2) + Math.Pow(r.AccelerationZ, 2), 0.5));
             }
+
+            foreach (GyrometerReading r in gyr_data)
+            {
+                gyr_energy.Add(Math.Pow(Math.Pow(r.AngularVelocityX, 2) + Math.Pow(r.AngularVelocityY, 2) + Math.Pow(r.AngularVelocityZ, 2), 0.5));
+            }
+            //Debug.WriteLine("byte count: " + System.Text.ASCIIEncoding.ASCII.GetByteCount(User.listToString(acc_energy)));
         }
 
-        private async void writeDataToFile()
-        {
-            
 
-            string writeMe = "";
-            bool temp = false;
-            foreach (double x in energy)
-            {
-
-                writeMe += (!temp ? "" : ", ") + x.ToString();
-                temp = true;
-            }
-
-            writeMe += ";";
-            temp = false;
-            foreach (double x in smoothData)
-            {
-
-                writeMe += (!temp ? "" : ", ") + x.ToString();
-                temp = true;
-            }
-
-            /*
-            writeMe += ";";
-            temp = false;
-            for (int i = 0; i < windowSize-2; i++)
-            {
-                writeMe += (!temp ? "" : ", ") + "0";
-                temp = true;
-            }
-            foreach (var nw in low.Zip(high, Tuple.Create))
-            {
-                foreach (double x in nw.Item1)
-                {
-                    writeMe += (!temp ? "" : ", ") + "0";
-                }
-                
-                foreach (double x in nw.Item2)
-                {
-                    writeMe += (!temp ? "" : ", ") + x.ToString();
-                }
-
-
-                
-            }
-            */
-            writeMe += ";";
-            temp = false;
-            foreach (double x in max_points)
-            {
-
-                writeMe += (!temp ? "" : ", ") + x.ToString();
-                temp = true;
-            }
-
-            writeMe += ";";
-            temp = false;
-            foreach (double x in min_points)
-            {
-
-                writeMe += (!temp ? "" : ", ") + x.ToString();
-                temp = true;
-            }
-
-           
-            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
-            savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-
-            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
-            savePicker.SuggestedFileName = "AccelerometerEnergyData";
-
-            Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
-
-            
-           
-
-            if (file != null)
-            {
-                // Prevent updates to the remote version of the file until
-                // we finish making changes and call CompleteUpdatesAsync.
-                Windows.Storage.CachedFileManager.DeferUpdates(file);
-                // write to file
-                await Windows.Storage.FileIO.WriteTextAsync(file, writeMe);
-                // Let Windows know that we're finished changing the file so
-                // the other app can update the remote version of the file.
-                // Completing updates may require Windows to ask for user input.
-                Windows.Storage.Provider.FileUpdateStatus status =
-                    await Windows.Storage.CachedFileManager.CompleteUpdatesAsync(file);
-
-            }
-            else
-            {
-                Debug.WriteLine("file is null");
-            }
-            inUse = false; // we have all the data we need in the string, go ahead and clear the object. 
-
-            Debug.WriteLine("qqq:" );
-
-
-        }
-
-        private async void AccelDataCallback(object state)
+        
+        private async void collectData(object state)
         {
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () =>
                 {
-                    if (_accelerometer != null)
+                    if (_accelerometer != null && _gyrometer != null)
                     {
-                        data.Add(_accelerometer.GetCurrentReading());
+                        acc_data.Add(_accelerometer.GetCurrentReading());
+                        gyr_data.Add(_gyrometer.GetCurrentReading());
+                        
+                        if (acc_data.Count >= 4000)
+                        {
+                            this.Stop();
+                           
+                            AccelerometerPage.current.enoughDataMessage();
+                        }
                     }
                 });
         }
@@ -393,7 +299,7 @@ namespace Knurd
                         low.Add(_l);
                 }
 
-                _l.Add(energy.ElementAt(i));
+                _l.Add(acc_energy.ElementAt(i));
             }
 
             Debug.WriteLine("high len: "+ high.Count);
@@ -414,23 +320,27 @@ namespace Knurd
 
             foreach (List<double> l in high)
             {
-                if (l.Max() >= peakThreshold)
+                if (Math.Abs(l.Max() - mean) >= noiseThreshold)
                     findThese_max.Add(l.Max());              
             }
 
 
             foreach (List<double> l in low)
             {
-                if (l.Min() <= mean - 0.1 )
+                if (Math.Abs(l.Min() - mean) >= noiseThreshold)
                     findThese_min.Add(l.Min());
             }
 
             Debug.WriteLine("max points amount: " + findThese_max.Count);
-            foreach(double d in energy)
+            string last = ""; // helps us skip double min/max values 
+            foreach(double d in acc_energy)
             {
-                if (findThese_max.Contains(d))
+                if (findThese_max.Contains(d) && last != "max")
                 {
+                    
                     max_points.Add(d);
+                    last = "max";
+                    
                 }
                 else
                 {
@@ -438,9 +348,11 @@ namespace Knurd
                 }
 
 
-                if (findThese_min.Contains(d))
+                if (findThese_min.Contains(d) && last != "min")
                 {
+                    
                     min_points.Add(d);
+                    last = "min";
                 }
                 else
                 {
@@ -512,7 +424,8 @@ namespace Knurd
             User u = EntryPage.user;
             if (u.step_baslineExists)
             {
-                u.energyList = User.listToString(energy);
+                u.acc_energyList = User.listToString(acc_energy);
+                u.gyr_energyList = User.listToString(gyr_energy);
                 u.maxPoints = User.listToString(max_points);
                 u.minPoints = User.listToString(min_points);
                 u.stepAmplitude = User.listToString(stepEnergy);
@@ -520,11 +433,13 @@ namespace Knurd
             }
             else
             {
-                u.B_energyList = User.listToString(energy);
+                u.B_acc_energyList = User.listToString(acc_energy);
+                u.B_gyr_energyList = User.listToString(gyr_energy);
                 u.B_maxPoints = User.listToString(max_points);
                 u.B_minPoints = User.listToString(min_points);
                 u.B_stepAmplitude = User.listToString(stepEnergy);
                 u.B_strideLength = User.listToString(strideLenghts);
+                u.step_baslineExists = true;
             }
         }
 

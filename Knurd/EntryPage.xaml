@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
 
-    <Grid>
+    <Grid Name="grid">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FF616C7C"/>
@@ -27,21 +27,25 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
-
+            <RowDefinition Height="*" />
+            
             <RowDefinition Height="3*" />
 
         </Grid.RowDefinitions>
 
-        
         
         <Image Source="Images/careBeer2.0.png" Margin="10" Grid.Row="0" VerticalAlignment="Bottom"/>
         <TextBox Name="usernameIn" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="200" Grid.Row="1" PlaceholderText="username" ></TextBox>
         <PasswordBox Name="passwordIn" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Grid.Row="2" PlaceholderText="password" PasswordChar="*" ></PasswordBox>
         <Button Name="go" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="3" Height="40" Width="100" Content="Go" FontSize="20" Click="go_Click"></Button>
         <Button Name="register" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="4" Height="40" Width="100" Content="Register" FontSize="20" Click="register_Click"></Button>
+        <Button Name="toFile" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="5" Height="40" Width="100" Content="toFile" FontSize="20" Click="toFile_Click"></Button>
 
         <Image Source="Images/CareBeerLogo_fancy2.png" Grid.Row="6" VerticalAlignment="Bottom"/>
 
+
+        
+        
     </Grid>
 
 

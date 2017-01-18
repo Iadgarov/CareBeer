@@ -20,6 +20,7 @@ using Windows.UI.Core;
 using System.Diagnostics;
 using Microsoft.WindowsAzure.Storage.Table;
 
+
 namespace Knurd
 {
     public sealed partial class EntryPage : Page
@@ -33,14 +34,37 @@ namespace Knurd
         public EntryPage()
         {
             this.InitializeComponent();
-            CloudServices.createTableStorage();
+            createTable();
 
 
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private async Task<bool> createTable()
         {
 
+            ContentDialog d = new ContentDialog();
+            ProgressRing p = new ProgressRing();
+
+            var panel = new StackPanel();
+            panel.Children.Add(new TextBlock { Text = "\n\n\nConnecting to cloud. Please wait." });
+            p.IsActive = true;
+            panel.Children.Add(p);
+            d.Content = panel;
+            d.ShowAsync();
+            
+
+            bool b = await CloudServices.createTableStorage();
+            d.Hide();
+            if (!b)
+            {
+                cloudErrorMessage();
+            }
+            return b;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+    
         }
 
 
@@ -66,6 +90,7 @@ namespace Knurd
         {
             MessageDialog m = new MessageDialog("Login failed.\n Incorrect password.");
             m.Commands.Add(new UICommand("OK"));
+            
             await m.ShowAsync();
 
 
@@ -105,5 +130,29 @@ namespace Knurd
 
 
         }
+
+        private async void cloudErrorMessage()
+        {
+            MessageDialog m = new MessageDialog("Could not connect to cloud services. Please check your internet connection");
+            m.Commands.Add(new UICommand("Try Again"));
+            var r = await m.ShowAsync();
+            if (r.Label == "Try Again")
+            {
+                createTable();
+            }
+
+        }
+
+
+        private async void toFile_Click(object sender, RoutedEventArgs e)
+        {
+            string username = usernameIn.Text;
+            string pass = passwordIn.Password;
+
+            await CloudServices.userParametersIntoFile(new Knurd.User(username, pass), "accel");
+        }
+
+
+
     }
 }

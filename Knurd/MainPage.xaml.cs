@@ -60,9 +60,9 @@ namespace Knurd
             m.Commands.Add(new UICommand("OK"));
             m.Commands.Add(new UICommand("No Thanks"));
             var r = await m.ShowAsync();
-            if (r.Label == "OK")
+            if (r != null && r.Label == "OK")
             {
-                // begin tests
+                this.Frame.Navigate(typeof(ReactionPageSingle));
             }
 
         }
@@ -70,17 +70,12 @@ namespace Knurd
 
         private void reactionGameButton_Click(object sender, RoutedEventArgs e)
         {
-           
-                this.Frame.Navigate(typeof(ReactionPage));
-           
+                this.Frame.Navigate(typeof(ReactionPageSingle));
         }
 
         private void accGraphButton_Click(object sender, RoutedEventArgs e)
         {
-
-          
-                this.Frame.Navigate(typeof(AccelerometerPage));
-         
+            this.Frame.Navigate(typeof(AccelerometerPage));
         }
 
         private void changeUser_Click(object sender, RoutedEventArgs e)
@@ -97,8 +92,13 @@ namespace Knurd
             }
             else
             {
-                // begin the tests
+                
             }
+        }
+
+        private void settings_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SettingsPage));
         }
     }
 }

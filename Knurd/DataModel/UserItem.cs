@@ -16,6 +16,10 @@ namespace Knurd
             this.userName = userName;
             this.password = password;
 
+            this.reaction_baslineExists = false;
+            this.step_baslineExists = false;
+            this.speech_baslineExists = false;
+
             this.PartitionKey = password;
             this.RowKey = userName;
 
@@ -26,6 +30,9 @@ namespace Knurd
 
         [JsonProperty(PropertyName = "password")]
         public string password { get; set; }
+
+        [JsonProperty(PropertyName = "reaction_baslineExists")]
+        public bool reactionSingle_baslineExists { get; set; }
 
         [JsonProperty(PropertyName = "reaction_baslineExists")]
         public bool reaction_baslineExists { get; set; }
@@ -39,6 +46,12 @@ namespace Knurd
 
 
         // reactiont time test results:
+        [JsonProperty(PropertyName = "reactionSingle_mean")]
+        public double reactionSingle_mean { get; set; }
+
+        [JsonProperty(PropertyName = "reactionSingle_variance")]
+        public double reactionSingle_variance { get; set; }
+
         [JsonProperty(PropertyName = "reaction_mean")]
         public double reaction_mean { get; set; }
 
@@ -49,6 +62,12 @@ namespace Knurd
         public double reaction_mistakes { get; set; }
 
         // basline data for this test
+        [JsonProperty(PropertyName = "B_reactionSingle_mean")]
+        public double B_reactionSingle_mean { get; set; }
+
+        [JsonProperty(PropertyName = "B_reactionSingle_variance")]
+        public double B_reactionSingle_variance { get; set; }
+
         [JsonProperty(PropertyName = "B_reaction_mean")]
         public double B_reaction_mean { get; set; }
 
@@ -62,8 +81,11 @@ namespace Knurd
 
 
         // gait test results:
-        [JsonProperty(PropertyName = "energyList")] 
-        public string energyList { get; set; } // the raw data
+        [JsonProperty(PropertyName = "acc_energyList")] 
+        public string acc_energyList { get; set; } // the raw data
+
+        [JsonProperty(PropertyName = "gyr_energyList")]
+        public string gyr_energyList { get; set; } // the raw data
 
         [JsonProperty(PropertyName = "maxPoints")]
         public string maxPoints { get; set; }
@@ -78,8 +100,11 @@ namespace Knurd
         public string stepAmplitude { get; set; }
 
         //Basline for this test:
-        [JsonProperty(PropertyName = "B_energyList")]
-        public string B_energyList { get; set; } // the raw data
+        [JsonProperty(PropertyName = "B_acc_energyList")]
+        public string B_acc_energyList { get; set; } // the acc raw data
+
+        [JsonProperty(PropertyName = "B_gyr_energyList")]
+        public string B_gyr_energyList { get; set; } // the acc raw data
 
         [JsonProperty(PropertyName = "B_maxPoints")]
         public string B_maxPoints { get; set; }
@@ -106,7 +131,7 @@ namespace Knurd
             bool first = true;
             foreach (double item in l)
             {
-                s += first ? item.ToString() : "," + item.ToString();
+                s += first ? item.ToString() : "," + item.ToString("F");
                 first = false;
             }
             return s;

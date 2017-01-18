@@ -13,11 +13,7 @@
         <Grid.RowDefinitions>
             
             <RowDefinition Height="*" />
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-      
+            <RowDefinition Height="8*" />
 
             <RowDefinition Height="Auto" />
 
@@ -84,14 +80,67 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
+
+        <Image Source="Images/settings.png" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+        <Button  x:Name="settingsButton" Background="#000000FF" Grid.Row="0"  Width="50" Height="50" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center" Click="settings_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                    x:Name="ButtonBackground"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="300" Background="{TemplateBinding Background}">
+                        <Border
+                        x:Name="PressedHighlightBackground"
+                        Background="Transparent"
+                        CornerRadius="300">
+                            <ContentControl x:Name="ContentContainer"
+                            Foreground="{TemplateBinding Foreground}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Padding="{TemplateBinding Padding}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Pink" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="Red" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter
+                                        Target="ContentContainer.Foreground"
+                                        Value="Black" />
+                                        <Setter
+                                        Target="PressedHighlightBackground.Background"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                        <Setter
+                                        Target="ButtonBackground.BorderBrush"
+                                        Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
         
-        
-
-        <Button Name="reactionGameButton" Height="50"  HorizontalAlignment="Center" Grid.Row="2" Content="Test Reaction time" Click="reactionGameButton_Click"></Button>
-        <Button Name="accGraphButton" Height="50"  HorizontalAlignment="Center" Grid.Row="3" Content="See acceleremoter graph" Click="accGraphButton_Click"></Button>
-        <Button Name="changeUser" Height="50"  HorizontalAlignment="Center" Grid.Row="4" Content="Switch Users" Click="changeUser_Click"></Button>
-
-
 
 
     </Grid>

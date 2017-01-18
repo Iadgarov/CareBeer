@@ -105,6 +105,12 @@
     <Compile Include="EntryPage.xaml.cs">
       <DependentUpon>EntryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReactionPageSingle.xaml.cs">
+      <DependentUpon>ReactionPageSingle.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ReactionPage.xaml.cs">
       <DependentUpon>ReactionPage.xaml</DependentUpon>
     </Compile>
@@ -123,6 +129,7 @@
     <Content Include="Assets\careBeer.png" />
     <Content Include="Images\careBeer2.0.png" />
     <Content Include="Images\CareBeerLogo_fancy2.png" />
+    <Content Include="Images\settings.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -142,6 +149,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="EntryPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ReactionPageSingle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
