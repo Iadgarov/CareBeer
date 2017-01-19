@@ -89,6 +89,10 @@ namespace Knurd
 
 
             var r = await m.ShowAsync();
+            if (r == null)
+            {
+                return;
+            }
 
             if (r.Label == "Next")
             {

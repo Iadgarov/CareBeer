@@ -39,9 +39,10 @@ namespace Knurd
 
         private void reactionGameButton_Click(object sender, RoutedEventArgs e)
         {
-           
-                this.Frame.Navigate(typeof(ReactionPageSingle));
-           
+
+            //this.Frame.Navigate(typeof(ReactionPageSingle));
+            this.Frame.Navigate(typeof(BubblePage));
+
         }
 
         private void accGraphButton_Click(object sender, RoutedEventArgs e)

@@ -190,7 +190,7 @@ namespace Knurd
 
             if (r.Label == "Next")
             {
-                this.Frame.Navigate(typeof(MainPage)); // go to main page for now TODO: change that
+                this.Frame.Navigate(typeof(BubblePage)); 
             }
             else if (r.Label == "Redo")
             {

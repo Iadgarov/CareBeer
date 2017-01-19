@@ -149,7 +149,7 @@ namespace Knurd
             string username = usernameIn.Text;
             string pass = passwordIn.Password;
 
-            await CloudServices.userParametersIntoFile(new Knurd.User(username, pass), "accel");
+            await CloudServices.userParametersIntoFile(new Knurd.User(username, pass), "bubble");
         }
 
 

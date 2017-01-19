@@ -7,17 +7,12 @@
  */
 //#define OFFLINE_SYNC_ENABLED
 
-using Microsoft.WindowsAzure.MobileServices;
 using System;
-using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using System.Linq;
-using Windows.Security.Credentials;
-using Windows.UI.Core;
-using System.Diagnostics;
+
 
 namespace Knurd
 {

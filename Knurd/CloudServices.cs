@@ -96,13 +96,18 @@ namespace Knurd
                 try
                 {
                     await CloudServices.table.ExecuteAsync(updateOperation);
+                    Debug.WriteLine("Entity updated.");
                 }
                 catch(Exception e)
                 {
                     Debug.WriteLine(e.StackTrace);
+                    Debug.WriteLine("------------");
+                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine("------------");
+                    Debug.WriteLine(e.Data);
                 }
 
-                Debug.WriteLine("Entity updated.");
+                
             }
             else
                 Debug.WriteLine("Entity could not be retrieved.");
@@ -114,6 +119,7 @@ namespace Knurd
 
         private static void updateUserFileds(User userBefore, User userAfter) //TODO: not sure what fields need to be changed- gave them all!
         {
+            // walking:
             userBefore.B_acc_energyList = userAfter.B_acc_energyList;
             userBefore.B_gyr_energyList = userAfter.B_gyr_energyList;
             userBefore.B_maxPoints = userAfter.B_maxPoints;
@@ -128,6 +134,14 @@ namespace Knurd
             userBefore.step_baslineExists = userAfter.step_baslineExists;
             userBefore.strideLength = userAfter.strideLength;
 
+            // bubble:
+            userBefore.B_acc_bubble_energy = userAfter.B_acc_bubble_energy;
+            userBefore.B_gyr_bubble_energy = userAfter.B_gyr_bubble_energy;     
+            userBefore.acc_bubble_energy = userAfter.acc_bubble_energy;
+            userBefore.gyr_bubble_energy = userAfter.gyr_bubble_energy;
+            userBefore.bubble_baslineExists = userAfter.bubble_baslineExists;
+
+            // reaction:
             userBefore.B_reaction_mean = userAfter.B_reaction_mean;
             userBefore.B_reaction_mistakes = userAfter.B_reaction_mistakes;
             userBefore.B_reaction_variance = userAfter.B_reaction_variance;
@@ -136,17 +150,18 @@ namespace Knurd
             userBefore.reaction_mistakes = userAfter.reaction_mistakes;
             userBefore.reaction_variance = userAfter.reaction_variance;
 
-            userBefore.B_reactionSingle_mean = userAfter.B_reaction_mean;
-            userBefore.B_reactionSingle_variance = userAfter.B_reaction_variance;
-            userBefore.reactionSingle_baslineExists = userAfter.reaction_baslineExists;
-            userBefore.reactionSingle_mean = userAfter.reaction_mean;
-            userBefore.reactionSingle_variance = userAfter.reaction_variance;
+            userBefore.B_reactionSingle_mean = userAfter.B_reactionSingle_mean;
+            userBefore.B_reactionSingle_variance = userAfter.B_reactionSingle_variance;
+            userBefore.reactionSingle_baslineExists = userAfter.reactionSingle_baslineExists;
+            userBefore.reactionSingle_mean = userAfter.reactionSingle_mean;
+            userBefore.reactionSingle_variance = userAfter.reactionSingle_variance;
 
+            // speech:
             userBefore.speech_baslineExists = userAfter.speech_baslineExists;
 
         }
 
-        //test == "reaction" | "accel" | "speech" only!        
+        //test == "reaction" | "accel" | "speech" | "bubble" only!        
         public static async Task<int> userParametersIntoFile(User user, string test)
         {
             // Assign the result to a CustomerEntity object. 
@@ -178,6 +193,13 @@ namespace Knurd
                         + "#" + u.stepAmplitude + "#" + u.B_acc_energyList + "#" + u.B_gyr_energyList + "#" + u.B_maxPoints + "#" + u.B_minPoints
                         + "#" + u.B_strideLength + "#" + u.B_stepAmplitude;
                     fileName = u.userName + "_" + u.password + "_accel";
+                }
+                else if (test.Equals("bubble"))
+                {
+                    data = u.bubble_baslineExists.ToString()
+                        + "#" + u.acc_bubble_energy + "#" + u.gyr_bubble_energy + "#"
+                        + u.B_acc_bubble_energy + "#" + u.B_gyr_bubble_energy;
+                    fileName = u.userName + "_" + u.password + "_bubble";
                 }
                 else if (test.Equals("speech"))
                 {

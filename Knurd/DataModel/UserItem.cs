@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Diagnostics;
 
 namespace Knurd
 {
@@ -31,7 +32,7 @@ namespace Knurd
         [JsonProperty(PropertyName = "password")]
         public string password { get; set; }
 
-        [JsonProperty(PropertyName = "reaction_baslineExists")]
+        [JsonProperty(PropertyName = "reactionSingle_baslineExists")]
         public bool reactionSingle_baslineExists { get; set; }
 
         [JsonProperty(PropertyName = "reaction_baslineExists")]
@@ -43,7 +44,10 @@ namespace Knurd
         [JsonProperty(PropertyName = "speech_baslineExists")]
         public bool speech_baslineExists { get; set; }
 
+        [JsonProperty(PropertyName = "bubble_baslineExists")]
+        public bool bubble_baslineExists { get; set; }
 
+        /******************************************************************/
 
         // reactiont time test results:
         [JsonProperty(PropertyName = "reactionSingle_mean")]
@@ -78,7 +82,7 @@ namespace Knurd
         public double B_reaction_mistakes { get; set; }
 
 
-
+        /******************************************************************/
 
         // gait test results:
         [JsonProperty(PropertyName = "acc_energyList")] 
@@ -119,8 +123,31 @@ namespace Knurd
         public string B_stepAmplitude { get; set; }
 
 
+        /******************************************************************/
+
+        // bubble test results:
+        [JsonProperty(PropertyName = "acc_bubble_energyList")]
+        public string acc_bubble_energy { get; set; } // the raw data
+
+        [JsonProperty(PropertyName = "gyr_bubble_energyList")]
+        public string gyr_bubble_energy { get; set; } // the raw data
+
+        //Basline for this test:
+        [JsonProperty(PropertyName = "B_acc_bubble_energyList")]
+        public string B_acc_bubble_energy { get; set; } // the acc raw data
+
+        [JsonProperty(PropertyName = "B_gyr_bubble_energyList")]
+        public string B_gyr_bubble_energy { get; set; } // the acc raw data
+
+        /******************************************************************/
+
+
         // speech test results:
         //TODO: fill this in
+
+
+
+        /******************************************************************/
 
         // util:
 
@@ -134,6 +161,7 @@ namespace Knurd
                 s += first ? item.ToString() : "," + item.ToString("F");
                 first = false;
             }
+            Debug.WriteLine("Size of string: " + System.Text.ASCIIEncoding.ASCII.GetByteCount(s));
             return s;
         }
 

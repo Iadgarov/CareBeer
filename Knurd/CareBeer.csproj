@@ -99,11 +99,14 @@
     <Compile Include="CloudServices.cs" />
     <Compile Include="ListExtensions.cs" />
     <Compile Include="DataModel\UserItem.cs" />
-    <Compile Include="AccelerometerPage.xaml.cs">
-      <DependentUpon>AccelerometerPage.xaml</DependentUpon>
+    <Compile Include="GaitTestPage.xaml.cs">
+      <DependentUpon>GaitTestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EntryPage.xaml.cs">
       <DependentUpon>EntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BubblePage.xaml.cs">
+      <DependentUpon>BubblePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -144,11 +147,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AccelerometerPage.xaml">
+    <Page Include="GaitTestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="EntryPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BubblePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
