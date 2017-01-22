@@ -9,7 +9,7 @@ using Windows.Devices.Sensors;
 
 using Windows.UI.Core;
 
-namespace Knurd
+namespace CareBeer
 {
     public class AccelerometerViewModel
     {
@@ -98,7 +98,8 @@ namespace Knurd
            
         }
 
-        public bool Stop()
+        // premature is true if leaving page before test completion. Uses for debug. Back nvigation should not be possible from test in final product
+        public bool Stop(bool premature)
         {
             mutx.WaitOne();
             if (!running)
@@ -111,6 +112,9 @@ namespace Knurd
             mutx.ReleaseMutex();
 
             accelerometer.Dispose();
+
+            if (premature)
+                return true;
 
             dataToEnergy();
             smooth(acc_energy);
@@ -172,7 +176,7 @@ namespace Knurd
                         
                         if (acc_data.Count >= 4000)
                         {
-                            this.Stop();
+                            this.Stop(false);
                            
                             AccelerometerPage.current.enoughDataMessage();
                         }

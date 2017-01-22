@@ -11,7 +11,7 @@ using Microsoft.WindowsAzure.Storage.Table; // Namespace for Table storage types
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Knurd
+namespace CareBeer
 {
     public class CloudServices
     {

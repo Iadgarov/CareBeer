@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 
-namespace Knurd
+namespace CareBeer
 {
     public sealed partial class MainPage : Page
     {

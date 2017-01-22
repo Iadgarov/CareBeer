@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Knurd
+namespace CareBeer
 {
     public static class ListExtensions
     {
@@ -61,6 +61,23 @@ namespace Knurd
             double variance = values.Variance(mean, start, end);
 
             return Math.Sqrt(variance);
+        }
+
+        // get a sublist of elements at index = modVal (modulo modBase)
+        // for example, if modBase = 2, modVal = 1, returns all elements at odd indices
+        public static List<T> SublistModulo<T>(this List<T> values, int modBase, int modVal)
+        {
+            var sublist = new List<T>();
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                if (i % modBase == modVal)
+                {
+                    sublist.Add(values[i]);
+                }
+            }
+
+            return sublist;
         }
     }
 }

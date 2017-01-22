@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 
 
-namespace Knurd
+namespace CareBeer
 {
     public sealed partial class ReactionPageSingle : Page
     {
@@ -25,7 +25,7 @@ namespace Knurd
         int counter;
         List<ReactionData> data; // This will contain data and be saved to cloud for sober case. 
 
-        const int FLASH_AMOUNT = 10;
+        const int FLASH_AMOUNT = 3;
 
         public ReactionPageSingle()
         {

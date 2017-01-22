@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Diagnostics;
 
-namespace Knurd
+namespace CareBeer
 {
     public class User : TableEntity
     {

@@ -21,7 +21,7 @@ using System.Diagnostics;
 using Microsoft.WindowsAzure.Storage.Table;
 
 
-namespace Knurd
+namespace CareBeer
 {
     public sealed partial class EntryPage : Page
     {
@@ -149,7 +149,7 @@ namespace Knurd
             string username = usernameIn.Text;
             string pass = passwordIn.Password;
 
-            await CloudServices.userParametersIntoFile(new Knurd.User(username, pass), "bubble");
+            await CloudServices.userParametersIntoFile(new CareBeer.User(username, pass), "bubble");
         }
 
 

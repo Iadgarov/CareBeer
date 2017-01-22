@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 
 
-namespace Knurd
+namespace CareBeer
 {
     public sealed partial class AccelerometerPage : Page
     {
@@ -71,6 +71,15 @@ namespace Knurd
             DataContext = vm;
 
         }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            vm.Stop(true); // stop prematurly
+
+        }
+
+
 
         private void startMode()
         {
@@ -121,7 +130,7 @@ namespace Knurd
             
 
             Debug.WriteLine("stop clicked");
-            if (!vm.Stop())
+            if (!vm.Stop(false))
                 return; // stop failed, not actually running .can't stop what's not running. stop asshole double clickers 
 
           

@@ -19,7 +19,7 @@ using Windows.Security.Credentials;
 using Windows.UI.Core;
 using System.Diagnostics;
 
-namespace Knurd
+namespace CareBeer
 {
     public sealed partial class SettingsPage : Page
     {
@@ -40,9 +40,17 @@ namespace Knurd
         private void reactionGameButton_Click(object sender, RoutedEventArgs e)
         {
 
-            //this.Frame.Navigate(typeof(ReactionPageSingle));
-            this.Frame.Navigate(typeof(BubblePage));
+            this.Frame.Navigate(typeof(ReactionPageSingle));
+        }
 
+        private void bubbleTestButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(BubblePage));
+        }
+
+        private void speechTestButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SpeechRecordingPage));
         }
 
         private void accGraphButton_Click(object sender, RoutedEventArgs e)

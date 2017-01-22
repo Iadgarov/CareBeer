@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 
 
-namespace Knurd
+namespace CareBeer
 {
     public sealed partial class ReactionPage : Page
     {
@@ -26,7 +26,7 @@ namespace Knurd
         List<ReactionData> data; // This will contain data and be saved to cloud for sober case. 
         private Button expected;
 
-        const int FLASH_AMOUNT = 10;
+        const int FLASH_AMOUNT = 3;
 
         public ReactionPage()
         {
@@ -42,6 +42,8 @@ namespace Knurd
 
         }
 
+
+
         private void reset()
         {
             beginMessage();
@@ -55,6 +57,7 @@ namespace Knurd
 
         private async void flash()
         {
+         
             toggleButtonEnable();
             if (counter < FLASH_AMOUNT)
             {
