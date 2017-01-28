@@ -13,17 +13,18 @@ using Windows.UI;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-
+using CareBeer.Tests.ReactionTime;
 
 namespace CareBeer
 {
     public sealed partial class ReactionPageSingle : Page
     {
 
-        Stopwatch sw;
-        Random rand;
-        int counter;
-        List<ReactionData> data; // This will contain data and be saved to cloud for sober case. 
+        private Stopwatch sw;
+        private Random rand;
+        private int counter;
+        //private List<ReactionData> data; // This will contain data and be saved to cloud for sober case.
+		private ReactionTimeTest tester;
 
         const int FLASH_AMOUNT = 3;
 
@@ -37,9 +38,10 @@ namespace CareBeer
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
-            reset();
-
-        }
+			tester = e.Parameter as ReactionTimeTest;
+			reset();
+			//data = e.Parameter as List<ReactionData>;
+		}
 
         private void reset()
         {
@@ -49,7 +51,8 @@ namespace CareBeer
             counter = 0;    // countes thenumber of flashes done
             sw = new Stopwatch();
             rand = new Random();
-            data = new List<ReactionData>();
+			tester.Data.Clear();
+            //data = new List<ReactionData>();
         }
 
         private async void flash()
@@ -64,12 +67,11 @@ namespace CareBeer
             {
                 button1.Content = "Done!";
                 button1.IsEnabled = false;
-    
-                
-                updateUser();
-                await CloudServices.replaceIneEntity(EntryPage.user);
-                summaryMessage();
-                return;
+
+				tester.CalculateResult();
+				summaryMessage();
+
+				return;
 
             }
             counter++;
@@ -77,37 +79,39 @@ namespace CareBeer
 
         }
 
-        private async void summaryMessage()
-        {
-            string s = "Results:\n";
-            s += "reaction time mean: " + averageReactionTime(data) + "mSec \n";
-            s += "reaction time variance: " + varianceReactionTime(data) + "\n";
 
-            MessageDialog m = new MessageDialog(s);
-            m.Commands.Add(new UICommand("Next"));
-            m.Commands.Add(new UICommand("Redo"));
+		private async void summaryMessage()
+		{
+			string s = "";
+			s += "reaction time mean: " + tester.ReactionTimeMean + "mSec \n";
+			s += "reaction time variance: " + tester.ReactionTimeVar + "\n";
 
-
-            var r = await m.ShowAsync();
-            if (r == null)
-            {
-                return;
-            }
-
-            if (r.Label == "Next")
-            {
-                this.Frame.Navigate(typeof(ReactionPage));
-            }
-            else if (r.Label == "Redo")
-            {
-                reset();
-            }
-            
-
-        }
+			MessageDialog m = new MessageDialog(s);
+			m.Title = "Results";
+			m.Commands.Add(new UICommand("Next"));
+			m.Commands.Add(new UICommand("Redo"));
 
 
-        private async void beginMessage()
+			var r = await m.ShowAsync();
+			if (r == null)
+			{
+				return;
+			}
+
+			if (r.Label == "Next")
+			{
+				tester.Finished();
+				//this.Frame.Navigate(typeof(ReactionPage));
+			}
+			else if (r.Label == "Redo")
+			{
+				reset();
+			}
+
+		}
+
+
+		private async void beginMessage()
         {
             MessageDialog m = new MessageDialog("When the screen flashes you must press the button. Ready?");
             m.Commands.Add(new UICommand("Yes!"));
@@ -117,6 +121,7 @@ namespace CareBeer
 
         }
         
+
         private void toggleButtonEnable()
         {
             button1.IsEnabled = !button1.IsEnabled;
@@ -135,7 +140,7 @@ namespace CareBeer
             ReactionData d = new ReactionData();
             d.rTime = sw.ElapsedMilliseconds;
             d.isRight = b.Equals(button1);
-            data.Add(d);
+            tester.Data.Add(d);
            
             sw.Reset();
             flash();
@@ -159,31 +164,7 @@ namespace CareBeer
             
         }
 
-        private long averageReactionTime(List<ReactionData> d)
-        {
-            long temp = 0; 
-            foreach (var t in d)
-            {
-                temp += t.rTime;
-            }
-            temp /= data.Count();
-
-            return temp;
-        }
-
-        private double varianceReactionTime(List<ReactionData> d)
-        {
-            double temp = 0;
-            long mean = averageReactionTime(d);
-            
-            foreach (var t in d)
-            {
-                temp += Math.Pow(t.rTime - mean, 2);
-            }
-            temp /= data.Count() - 1;
-
-            return temp;
-        }
+        
 
    
         private void getSoberData()
@@ -191,28 +172,7 @@ namespace CareBeer
             //TODO: method that gets list of data from cloud to be compared to. 
         }
 
-        private void updateUser()
-        {
-            User u = EntryPage.user;
-            if (u.reactionSingle_baslineExists)
-            {
-                u.reactionSingle_mean = averageReactionTime(data);
-                u.reactionSingle_variance = varianceReactionTime(data);
-            }
-            else
-            {
-                u.B_reactionSingle_mean = averageReactionTime(data);
-                u.B_reactionSingle_variance = varianceReactionTime(data);
-                u.reactionSingle_baslineExists = true;
-            }
-        }
-
-        private class ReactionData
-        {
-            public bool isRight { get; set; }
-            public long rTime { get; set; }
-
-        }
+        
 
         
     }

@@ -99,7 +99,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AccelerometerViewModel.cs" />
+    <Compile Include="BubbleTest.cs" />
     <Compile Include="CloudServices.cs" />
+    <Compile Include="DrunkTest.cs" />
+    <Compile Include="GaitTest.cs" />
     <Compile Include="ListExtensions.cs" />
     <Compile Include="DataModel\UserItem.cs" />
     <Compile Include="GaitTestPage.xaml.cs">
@@ -111,6 +114,7 @@
     <Compile Include="BubblePage.xaml.cs">
       <DependentUpon>BubblePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReactionTimeTest.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -128,6 +132,7 @@
     <Compile Include="SpeechRecordingPage.xaml.cs">
       <DependentUpon>SpeechRecordingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TestManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -190,6 +195,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
+      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
+    </SDKReference>
+    <SDKReference Include="Microsoft.VCLibs.120, Version=14.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Universal</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

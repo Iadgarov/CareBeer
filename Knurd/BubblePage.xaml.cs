@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
 using Windows.UI.Core;
+using CareBeer.Tests;
 //using System.Threading;
 
 namespace CareBeer
@@ -18,8 +19,8 @@ namespace CareBeer
     public sealed partial class BubblePage : Page
     {
 
-        List<AccelerometerReading> acc_data;
-        List<GyrometerReading> gyr_data;
+        //List<AccelerometerReading> acc_data;
+        //List<GyrometerReading> gyr_data;
         List<double> acc_energy;
         List<double> gyr_energy;
 
@@ -28,7 +29,9 @@ namespace CareBeer
 
         private int time = 0;
         private const int done = 30;
-        DispatcherTimer t;
+        DispatcherTimer dTimer;
+
+		private BubbleTest tester;
    
 
         public BubblePage()
@@ -40,13 +43,15 @@ namespace CareBeer
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            beginMessage();          
+			tester = e.Parameter as BubbleTest;
+            beginMessage();
+			begin();        
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            t.Stop();
+            dTimer.Stop();
             _gyrometer.ReadingChanged -= ReadingChanged;
             _accelerometer.ReadingChanged -= ReadingChanged;
             _accelerometer = null;
@@ -56,14 +61,23 @@ namespace CareBeer
         private void begin()
         {
 
-            acc_energy = new List<double>();
-            gyr_energy = new List<double>();
+            acc_energy = tester.accelEnergy;
+			acc_energy.Clear();
+
+            gyr_energy = tester.gyroEnergy;
+			gyr_energy.Clear();
+
             time = 0;
 
-            _gyrometer = Gyrometer.GetDefault();
+			dTimer = new DispatcherTimer();
+			dTimer.Tick += tickTock;
+			dTimer.Interval = new TimeSpan(0, 0, 1);
+			dTimer.Start();
+
+			_gyrometer = Gyrometer.GetDefault();
             if (_gyrometer != null)
             {
-                _gyrometer.ReportInterval = (uint)(_gyrometer.MinimumReportInterval * 2); // times two b/c we can't handle too much data on azure
+                _gyrometer.ReportInterval = _gyrometer.MinimumReportInterval * 2; // times two b/c we can't handle too much data on azure
                 _gyrometer.ReadingChanged += new TypedEventHandler<Gyrometer, GyrometerReadingChangedEventArgs>(ReadingChanged);
             }
 
@@ -153,7 +167,7 @@ namespace CareBeer
 
             if (r.Label == "Finish")
             {
-                this.Frame.Navigate(typeof(MainPage));
+                tester.Finished();
             }
             else if (r.Label == "Redo")
             {
@@ -168,31 +182,24 @@ namespace CareBeer
             MessageDialog m = new MessageDialog("Try to keep the wild dot in the center for " + done + " seconds.");
             m.Commands.Add(new UICommand("Ok"));
             await m.ShowAsync();
-            t = new DispatcherTimer();
-            t.Tick += tickTock;
-            t.Interval = new TimeSpan(0, 0, 1);
-            t.Start();
-            begin();
-
 
         }
 
-        private async void tickTock(object sender, object e)
+        private void tickTock(object sender, object e)
         {
             time++;
             timer.Text = ((int) (time / 60)).ToString("00") + ":" + (time % 60).ToString("00");
 
             if (time == done)
             {
-                t.Stop();
+                dTimer.Stop();
 
                 _gyrometer.ReadingChanged -= ReadingChanged;
                 _accelerometer.ReadingChanged -= ReadingChanged;
 
                 Debug.WriteLine("gyr len: " + gyr_energy.Count);
                 Debug.WriteLine("acc len: " + acc_energy.Count);
-                updateUser();
-                await CloudServices.replaceIneEntity(EntryPage.user);
+
                 summaryMessage();
             }
         }
@@ -204,28 +211,7 @@ namespace CareBeer
             button1.IsEnabled = !button1.IsEnabled;
             
         }
-
-       
-
-     
-
-        private void updateUser()
-        {
-            User u = EntryPage.user;
-            if (u.bubble_baslineExists)
-            {
-                u.acc_bubble_energy = User.listToString(acc_energy);
-                u.gyr_bubble_energy = User.listToString(gyr_energy);
-                
-            }
-            else
-            {
-                u.B_acc_bubble_energy = User.listToString(acc_energy);
-                u.B_gyr_bubble_energy = User.listToString(gyr_energy);
-                
-                u.bubble_baslineExists = true;
-            }
-        }
+ 
 
     }
 }

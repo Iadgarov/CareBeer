@@ -7,7 +7,10 @@
  */
 //#define OFFLINE_SYNC_ENABLED
 
+using CareBeer.Tests;
+using CareBeer.Tests.ReactionTime;
 using System;
+using System.Collections.Generic;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -57,7 +60,10 @@ namespace CareBeer
             var r = await m.ShowAsync();
             if (r != null && r.Label == "OK")
             {
-                this.Frame.Navigate(typeof(ReactionPageSingle));
+				TestManager.Instance.Tests = new List<DrunkTest>();
+				TestManager.Instance.Tests.Add(new ReactionTimeTest());
+				TestManager.Instance.Start();
+				//this.Frame.Navigate(typeof(ReactionPageSingle));
             }
 
         }

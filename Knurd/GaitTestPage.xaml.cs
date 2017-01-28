@@ -19,18 +19,15 @@ using Windows.Devices.Sensors;
 using Windows.UI.Popups;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
-
+using CareBeer.Tests;
 
 namespace CareBeer
 {
     public sealed partial class AccelerometerPage : Page
     {
 
-
-
-        AccelerometerViewModel vm;
-
+        //AccelerometerViewModel vm;
+		GaitTest tester;
 
         // Sensor and dispatcher variables
         private Accelerometer _accelerometer;
@@ -38,6 +35,7 @@ namespace CareBeer
         private bool start = true;
 
         public static AccelerometerPage current;
+
 
         public AccelerometerPage()
         {
@@ -57,25 +55,26 @@ namespace CareBeer
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+			tester = e.Parameter as GaitTest;
 
             if (Accelerometer.GetDefault() == null)
             {
                 Debug.WriteLine("no accleromerter!");
-                vm = new AccelerometerViewModel();
+                //tester.AccVm = new AccelerometerViewModel();
                 noAccMessage();
 
             }
 
 
-            vm = new AccelerometerViewModel();
-            DataContext = vm;
+            tester.AccVm = new AccelerometerViewModel();
+            DataContext = tester.AccVm;
 
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            vm.Stop(true); // stop prematurly
+            tester.AccVm.Stop(true); // stop prematurly
 
         }
 
@@ -85,6 +84,7 @@ namespace CareBeer
         {
             start = true;
             startStopButton.Content = "Start";
+			startStopButton.IsEnabled = true;
         }
 
         private void stopMode()
@@ -122,7 +122,7 @@ namespace CareBeer
         {
 
             stopMode();
-            vm.Start();
+            tester.AccVm.Start();
         }
 
         private async void btnStop_Click()
@@ -130,21 +130,15 @@ namespace CareBeer
             
 
             Debug.WriteLine("stop clicked");
-            if (!vm.Stop(false))
-                return; // stop failed, not actually running .can't stop what's not running. stop asshole double clickers 
+			startStopButton.IsEnabled = false;
+			tester.AccVm.Stop(false);
+			// if (!tester.AccVm.Stop(false))
+			//   return; // stop failed, not actually running .can't stop what's not running. stop asshole double clickers 
 
-          
-            summaryMessage();
-    
+			summaryMessage();
 
-            await CloudServices.replaceIneEntity(EntryPage.user);
-
-            vm = new AccelerometerViewModel(); // fresh dataset for future test. by now things should have been saved. 
-
-            
-            
-            
         }
+
 
         public async void enoughDataMessage()
         {
@@ -163,11 +157,7 @@ namespace CareBeer
                 //Debug.WriteLine(e.StackTrace);
             }
 
-            await CloudServices.replaceIneEntity(EntryPage.user);
-
-            vm = new AccelerometerViewModel(); // fresh dataset for future test. by now things should have been saved. 
-
-            startMode();
+			summaryMessage();
 
         }
 
@@ -176,7 +166,7 @@ namespace CareBeer
         {
 
             string s = "";
-            s += "Step Count: " + vm.getStepCount();
+            s += "Step Count: " + tester.AccVm.getStepCount();
 
             MessageDialog m = new MessageDialog(s);
             m.Commands.Add(new UICommand("Next"));
@@ -199,11 +189,12 @@ namespace CareBeer
 
             if (r.Label == "Next")
             {
-                this.Frame.Navigate(typeof(BubblePage)); 
+				tester.Finished();
             }
             else if (r.Label == "Redo")
             {
-                startMode(); // reset
+				tester.AccVm = new AccelerometerViewModel();
+				startMode(); // reset
             }
 
         }
