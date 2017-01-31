@@ -60,8 +60,8 @@ namespace CareBeer
             var r = await m.ShowAsync();
             if (r != null && r.Label == "OK")
             {
-				TestManager.Instance.Tests = new List<DrunkTest>();
-				TestManager.Instance.Tests.Add(new ReactionTimeTest());
+				TestManager.Instance.TestsToRun = TestId.All;
+				//TestManager.Instance.Tests.Add(new ReactionTimeTest());
 				TestManager.Instance.Start();
 				//this.Frame.Navigate(typeof(ReactionPageSingle));
             }
@@ -93,13 +93,19 @@ namespace CareBeer
             }
             else
             {
-                
+                TestManager.Instance.TestsToRun = TestId.All;
+                TestManager.Instance.Start();
             }
         }
 
         private void settings_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SettingsPage));
+        }
+
+        private void testListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(TestSelectorPage));
         }
     }
 }

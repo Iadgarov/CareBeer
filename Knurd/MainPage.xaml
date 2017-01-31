@@ -140,7 +140,16 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        
+
+        <AppBarButton x:Name="testListBtn"
+                      Grid.Row="1"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center"
+                      Icon="List"
+                      Click="testListBtn_Click"
+                      Margin="0,23.667,0,375.667"
+                      RenderTransformOrigin="0.588,1.55" />
+
 
 
     </Grid>
