@@ -26,17 +26,18 @@
         <Image Source="Images/CareBeerLogo_fancy2.png" Grid.Row="6" VerticalAlignment="Bottom"/>
 
 
+        <Button Name="changeUser"
+                Height="50"
+                MinWidth="100"
+                HorizontalAlignment="Center"
+                Grid.Row="1"
+                Content="Switch User"
+                Click="changeUser_Click"
+                Margin="5"></Button>
 
-        <Button Name="reactionGameButton" Height="50" MinWidth="100" HorizontalAlignment="Center" Grid.Row="0" Content="Reaction Test" Click="reactionGameButton_Click" Margin="5"></Button>
-        <Button Name="bubbleTestButton" Height="50" MinWidth="100" HorizontalAlignment="Center" Grid.Row="1" Content="Bubble Test" Click="bubbleTestButton_Click" Margin="5"></Button>
-        <Button Name="speechTestButton" Height="50" MinWidth="100" HorizontalAlignment="Center" Grid.Row="2" Content="Speech Test" Click="speechTestButton_Click" Margin="5"></Button>
-        <Button Name="accGraphButton" Height="50"  MinWidth="100" HorizontalAlignment="Center" Grid.Row="3" Content="Gait Test" Click="accGraphButton_Click" Margin="5"></Button>
-        <Button Name="changeUser" Height="50"  MinWidth="100" HorizontalAlignment="Center" Grid.Row="4" Content="Switch Users" Click="changeUser_Click" Margin="5"></Button>
-        <Button Name="backButton" Height="50" MinWidth="100" HorizontalAlignment="Center" Grid.Row="5" Content="Back" Click="backButton_Click" Margin="5"></Button>
 
 
 
-       
 
     </Grid>
     

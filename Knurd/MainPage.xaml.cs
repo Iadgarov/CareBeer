@@ -7,7 +7,10 @@
  */
 //#define OFFLINE_SYNC_ENABLED
 
+using CareBeer.Tests;
+using CareBeer.Tests.ReactionTime;
 using System;
+using System.Collections.Generic;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -57,7 +60,10 @@ namespace CareBeer
             var r = await m.ShowAsync();
             if (r != null && r.Label == "OK")
             {
-                this.Frame.Navigate(typeof(ReactionPageSingle));
+				TestManager.Instance.TestsToRun = TestId.All;
+				//TestManager.Instance.Tests.Add(new ReactionTimeTest());
+				TestManager.Instance.Start();
+				//this.Frame.Navigate(typeof(ReactionPageSingle));
             }
 
         }
@@ -87,13 +93,19 @@ namespace CareBeer
             }
             else
             {
-                
+                TestManager.Instance.TestsToRun = TestId.All;
+                TestManager.Instance.Start();
             }
         }
 
         private void settings_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SettingsPage));
+        }
+
+        private void testListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(TestSelectorPage));
         }
     }
 }

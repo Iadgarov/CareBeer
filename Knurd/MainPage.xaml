@@ -81,6 +81,19 @@
             </Button.Template>
         </Button>
 
+
+        <AppBarButton x:Name="settingsButton"
+                      Grid.Row="0"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center"
+                      Icon="Setting"
+                      Click="settings_Click"
+                      Margin="0,0,0,0"
+                      RenderTransformOrigin="0.588,1.55" 
+                      Background="#000000ff"
+                      />
+        
+        <!--
         <Image Source="Images/settings.png" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"/>
         <Button  x:Name="settingsButton" Background="#000000FF" Grid.Row="0"  Width="50" Height="50" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center" Click="settings_Click">
             <Button.Template>
@@ -140,7 +153,19 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
+        !-->
         
+        <AppBarButton x:Name="testListBtn"
+                      Grid.Row="1"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      Icon="List"
+                      Click="testListBtn_Click"
+                      Margin="0,0,0,0"
+                      RenderTransformOrigin="0.588,1.55" 
+                      Background="#000000ff"
+                      />
+
 
 
     </Grid>
