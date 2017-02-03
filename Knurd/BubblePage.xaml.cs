@@ -52,8 +52,8 @@ namespace CareBeer
         {
             base.OnNavigatedFrom(e);
             dTimer.Stop();
-            _gyrometer.ReadingChanged -= ReadingChanged;
-            _accelerometer.ReadingChanged -= ReadingChanged;
+            if (_gyrometer != null) _gyrometer.ReadingChanged -= ReadingChanged;
+            if (_accelerometer != null) _accelerometer.ReadingChanged -= ReadingChanged;
             _accelerometer = null;
             _gyrometer = null;
         }
@@ -87,10 +87,23 @@ namespace CareBeer
                 _accelerometer.ReportInterval = _accelerometer.MinimumReportInterval;
                 _accelerometer.ReadingChanged += new TypedEventHandler<Accelerometer, AccelerometerReadingChangedEventArgs>(ReadingChanged);
             }
+
+            if (_accelerometer == null || _gyrometer == null)
+            {
+                noGyroMessage();
+            }
         }
 
 
-        
+        private async void noGyroMessage()
+        {
+            MessageDialog m = new MessageDialog("This device does not have a gyrometer and/or accelerometer!");
+            await m.ShowAsync();
+            tester.Finished(true);
+
+        }
+
+
         async private void ReadingChanged(object sender, GyrometerReadingChangedEventArgs e)
         {
             
@@ -167,7 +180,7 @@ namespace CareBeer
 
             if (r.Label == "Finish")
             {
-                tester.Finished();
+                tester.Finished(false);
             }
             else if (r.Label == "Redo")
             {

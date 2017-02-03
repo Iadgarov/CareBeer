@@ -97,7 +97,7 @@ namespace CareBeer
         {
             MessageDialog m = new MessageDialog("This device does not have an accelerometer!");
             await m.ShowAsync();
-            this.Frame.GoBack();
+            tester.Finished(true);
 
         }
 
@@ -189,7 +189,7 @@ namespace CareBeer
 
             if (r.Label == "Next")
             {
-				tester.Finished();
+				tester.Finished(false);
             }
             else if (r.Label == "Redo")
             {

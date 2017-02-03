@@ -37,35 +37,11 @@ namespace CareBeer
         {
         }
 
-        private void reactionGameButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            this.Frame.Navigate(typeof(ReactionPageSingle));
-        }
-
-        private void bubbleTestButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(BubblePage));
-        }
-
-        private void speechTestButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(SpeechRecordingPage));
-        }
-
-        private void accGraphButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(AccelerometerPage));
-        }
 
         private void changeUser_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(EntryPage));
         }
 
-        private void backButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(MainPage));
-        }
     }
 }

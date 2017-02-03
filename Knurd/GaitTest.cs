@@ -25,11 +25,13 @@ namespace CareBeer.Tests
 		}
 
 
-		public void Finished()
+		public void Finished(bool skipped)
 		{
-
-			CloudServices.replaceIneEntity(EntryPage.user); // should await?
-
+            if (!skipped)
+            {
+                CloudServices.replaceIneEntity(EntryPage.user); // should await?
+            }
+			
 			_result = false; // DUMMY
 
 			TestFinishedEvent(this, new EventArgs());

@@ -54,9 +54,5 @@ namespace CareBeer
             TestManager.Instance.Start();
         }
 
-        private void checkbox_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
