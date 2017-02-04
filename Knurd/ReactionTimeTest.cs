@@ -48,8 +48,11 @@ namespace CareBeer.Tests.ReactionTime
 			else updateUserMultiple();
 
 			CloudServices.replaceIneEntity(EntryPage.user); // should await?
+            
 
-			TestFinishedEvent(this, new EventArgs());
+            _result = false; // DUMMY
+
+            TestFinishedEvent(this, new EventArgs());
 			
 		}
 

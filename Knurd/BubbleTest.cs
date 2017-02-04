@@ -35,9 +35,9 @@ namespace CareBeer.Tests
                 updateUser();
                 CloudServices.replaceIneEntity(EntryPage.user); // should await?
             }
-			
 
-			_result = false; // DUMMY
+
+            _result = false; // DUMMY
 
 			TestFinishedEvent(this, new EventArgs());
 

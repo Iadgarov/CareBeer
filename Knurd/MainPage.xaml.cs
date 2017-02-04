@@ -15,7 +15,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-
+using Windows.Storage;
 
 namespace CareBeer
 {
@@ -30,7 +30,7 @@ namespace CareBeer
             this.InitializeComponent();
             //Current = this;
 
-            
+            Application.Current.Suspending += new SuspendingEventHandler(App_Suspending);
 
 
         }
@@ -106,6 +106,18 @@ namespace CareBeer
         private void testListBtn_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(TestSelectorPage));
+        }
+
+
+        async void App_Suspending(Object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+            ApplicationDataCompositeValue composite = new ApplicationDataCompositeValue();
+            composite["username"] = EntryPage.user.userName;
+            composite["password"] = EntryPage.user.password;
+
+            localSettings.Values["user"] = composite;
         }
     }
 }

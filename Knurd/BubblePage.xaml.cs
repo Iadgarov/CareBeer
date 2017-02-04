@@ -41,9 +41,11 @@ namespace CareBeer
 
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs args)
         {
-			tester = e.Parameter as BubbleTest;
+            Frame.BackStack.Clear();
+
+            tester = args.Parameter as BubbleTest;
             beginMessage();
 			begin();        
         }
@@ -56,6 +58,8 @@ namespace CareBeer
             if (_accelerometer != null) _accelerometer.ReadingChanged -= ReadingChanged;
             _accelerometer = null;
             _gyrometer = null;
+
+            Frame.BackStack.Clear();
         }
 
         private void begin()

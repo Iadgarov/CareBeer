@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 
 using CareBeer.Tests.ReactionTime;
+using Windows.UI.Core;
 
 namespace CareBeer
 {
@@ -35,13 +36,21 @@ namespace CareBeer
 
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs args)
         {
+            Frame.BackStack.Clear();
 
-			tester = e.Parameter as ReactionTimeTest;
+            tester = args.Parameter as ReactionTimeTest;
 			reset();
 			//data = e.Parameter as List<ReactionData>;
 		}
+
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            Frame.BackStack.Clear();
+        }
+
 
         private void reset()
         {

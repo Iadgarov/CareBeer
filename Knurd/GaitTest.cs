@@ -34,7 +34,8 @@ namespace CareBeer.Tests
 			
 			_result = false; // DUMMY
 
-			TestFinishedEvent(this, new EventArgs());
+
+            TestFinishedEvent(this, new EventArgs());
 
 		}
 	}
