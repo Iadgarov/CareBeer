@@ -15,8 +15,8 @@ namespace CareBeer.Tests
 		public List<double> accelEnergy;
 		public List<double> gyroEnergy;
 
-		private bool _result;
-		public override bool Result => _result;
+		private ResultValue _result = ResultValue.SKIP;
+		public override ResultValue Result => _result;
 
 		public override event EventHandler TestFinishedEvent;
 
@@ -30,15 +30,15 @@ namespace CareBeer.Tests
 
 		public void Finished(bool skipped)
 		{
+
             if (!skipped)
             {
                 updateUser();
                 CloudServices.replaceIneEntity(EntryPage.user); // should await?
+                _result = ResultValue.PASS; // DUMMY
             }
 
-
-            _result = false; // DUMMY
-
+            TestManager.Instance.Results.BubbleResult = _result;
 			TestFinishedEvent(this, new EventArgs());
 
 		}

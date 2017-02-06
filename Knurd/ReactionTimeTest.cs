@@ -22,8 +22,8 @@ namespace CareBeer.Tests.ReactionTime
 		public double ReactionTimeVar { get; private set; }
 		public int Mistakes { get; private set; }
 
-		private bool _result;
-		public override bool Result => _result;
+		private ResultValue _result;
+		public override ResultValue Result => _result;
 		public override event EventHandler TestFinishedEvent;
 
 		public List<ReactionData> Data;
@@ -50,7 +50,15 @@ namespace CareBeer.Tests.ReactionTime
 			CloudServices.replaceIneEntity(EntryPage.user); // should await?
             
 
-            _result = false; // DUMMY
+            _result = ResultValue.PASS; // DUMMY
+            if (single)
+            {
+                TestManager.Instance.Results.SingleReactionResult = _result;
+            }
+            else
+            {
+                TestManager.Instance.Results.ReactionResult = _result;
+            }
 
             TestFinishedEvent(this, new EventArgs());
 			
@@ -66,7 +74,7 @@ namespace CareBeer.Tests.ReactionTime
 				Mistakes = ReactionData.mistakes(Data);
 			}
 
-			_result = false; // DUMMY
+			//_result = ResultValue.PASS; // DUMMY
 		}
 
 

@@ -25,6 +25,7 @@ namespace CareBeer.Tests
 	{
 		private static TestManager instance;
 		private TestManager() { }
+        
 
 		public static TestManager Instance
 		{
@@ -41,8 +42,10 @@ namespace CareBeer.Tests
 		//public List<DrunkTest> Tests { get; set; }
 		public TestId TestsToRun { get; set; }
 		private int curr;
+        public Results Results { get; private set; }
 
-		public void Start()
+
+        public void Start()
 		{
 			if (TestsToRun == TestId.None)
 			{
@@ -50,7 +53,8 @@ namespace CareBeer.Tests
 				return;
 			}
 
-			curr = 1;
+            Results = new Results();
+            curr = 1;
 			Next();
 			
 		}
@@ -61,8 +65,7 @@ namespace CareBeer.Tests
 			DrunkTest next = getNextTest();
 			if (next == null)
 			{
-				// TODO: display results
-				((Frame)Window.Current.Content).Navigate(typeof(MainPage)); // in the meantime
+				((Frame)Window.Current.Content).Navigate(typeof(ResultsPage), Results);
 				return;
 			}
 
