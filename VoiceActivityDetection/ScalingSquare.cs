@@ -14,7 +14,7 @@ namespace WebRtc.CommonAudio.SignalProcessing
             int i;
             Int16 smax = -1;
             Int16 sabs;
-            ref Int16[] sptr = ref in_vector;
+            Int16[] sptr = in_vector;
             Int16 t;
             int looptimes = in_vector_length;
 
