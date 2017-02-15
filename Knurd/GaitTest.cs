@@ -30,7 +30,11 @@ namespace CareBeer.Tests
             if (!skipped)
             {
                 CloudServices.replaceIneEntity(EntryPage.user); // should await?
-                _result = ResultValue.PASS; // DUMMY
+
+
+                _result = (AccVm.getStrideLengthVariance() > 2 * EntryPage.user.B_strideLengthVariance ?
+                    ResultValue.FAIL : ResultValue.PASS);
+
             }
 			
 			

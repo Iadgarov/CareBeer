@@ -61,6 +61,10 @@ namespace CareBeer
             {
                 test |= TestId.Reaction;
             }
+            if ((bool)speechCheckbox.IsChecked)
+            {
+                test |= TestId.Speech;
+            }
 
             TestManager.Instance.TestsToRun = test;
             TestManager.Instance.Start();

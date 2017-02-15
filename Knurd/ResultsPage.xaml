@@ -33,6 +33,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
 
             </Grid.RowDefinitions>
 
@@ -61,6 +62,11 @@
                        HorizontalAlignment="Center">
                 Multiple-Button Reaction Test
             </TextBlock>
+            <TextBlock Name="speechTestResult"
+                       Grid.Row="5"
+                       HorizontalAlignment="Center">
+                Speech Test
+            </TextBlock>
 
         </Grid>
 
@@ -76,57 +82,9 @@
                  Click="returnBtn_Click"
                  Grid.Row="2"
                  Content="Return"
-                 FontSize="20">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="ButtonBackground"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="100"
-                            Background="{TemplateBinding Background}">
-                        <Border x:Name="PressedHighlightBackground"
-                                Background="Transparent"
-                                CornerRadius="100">
-                            <ContentControl x:Name="ContentContainer"
-                                            Foreground="{TemplateBinding Foreground}"
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            Padding="{TemplateBinding Padding}"
-                                            Content="{TemplateBinding Content}"
-                                            ContentTemplate="{TemplateBinding ContentTemplate}" />
-                        </Border>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Target="ContentContainer.Foreground"
-                                                Value="Pink" />
-                                        <Setter Target="PressedHighlightBackground.Background"
-                                                Value="Red" />
-                                        <Setter Target="ButtonBackground.BorderBrush"
-                                                Value="{StaticResource AppBarBackgroundThemeBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <VisualState.Setters>
-                                        <Setter Target="ContentContainer.Foreground"
-                                                Value="Black" />
-                                        <Setter Target="PressedHighlightBackground.Background"
-                                                Value="{StaticResource AppBarBackgroundThemeBrush}" />
-                                        <Setter Target="ButtonBackground.BorderBrush"
-                                                Value="{StaticResource AppBarBackgroundThemeBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+                 FontSize="20"
+                 Style="{StaticResource CircleButton}"/>
+        
 
 
     </Grid>

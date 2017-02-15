@@ -47,6 +47,7 @@ namespace CareBeer
             bubbleTestResult.Text = "Bubble Test - " + res.BubbleResult.ToString();
             singleReactionTestResult.Text = "Single-Button Reaction Test - " + res.SingleReactionResult.ToString();
             reactionTestResult.Text = "Multiple-Button Reaction Test - " + res.ReactionResult.ToString();
+            speechTestResult.Text = "Speech Test - " + res.SpeechResult.ToString();
         }
 
         private void returnBtn_Click(object sender, RoutedEventArgs e)

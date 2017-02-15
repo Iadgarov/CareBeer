@@ -35,7 +35,9 @@ namespace CareBeer.Tests
             {
                 updateUser();
                 CloudServices.replaceIneEntity(EntryPage.user); // should await?
-                _result = ResultValue.PASS; // DUMMY
+
+                _result = (gyroEnergy.Variance() > 2 * EntryPage.user.B_gyr_bubble_energyVariance ?
+                    ResultValue.FAIL : ResultValue.PASS);
             }
 
             TestManager.Instance.Results.BubbleResult = _result;
@@ -51,14 +53,15 @@ namespace CareBeer.Tests
 			{
 				u.acc_bubble_energy = User.listToString(accelEnergy);
 				u.gyr_bubble_energy = User.listToString(gyroEnergy);
-
+                u.gyr_bubble_energyVariance = gyroEnergy.Variance();
 			}
 			else
 			{
 				u.B_acc_bubble_energy = User.listToString(accelEnergy);
 				u.B_gyr_bubble_energy = User.listToString(gyroEnergy);
+                u.B_gyr_bubble_energyVariance = gyroEnergy.Variance();
 
-				u.bubble_baslineExists = true;
+                u.bubble_baslineExists = true;
 			}
 		}
 	}

@@ -14,6 +14,7 @@ namespace CareBeer.Tests
         public ResultValue BubbleResult { get; set; }
         public ResultValue SingleReactionResult { get; set; }
         public ResultValue ReactionResult { get; set; }
+        public ResultValue SpeechResult { get; set; }
 
         public Results()
         {
@@ -22,6 +23,7 @@ namespace CareBeer.Tests
             BubbleResult = ResultValue.SKIP;
             SingleReactionResult = ResultValue.SKIP;
             ReactionResult = ResultValue.SKIP;
+            SpeechResult = ResultValue.SKIP;
         }
     }
 }

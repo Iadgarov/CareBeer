@@ -20,8 +20,17 @@
         </Grid.ColumnDefinitions>
 
 
-        <Button  x:Name="button1" Background="Red" Grid.Column="0"  Width="100" Height="100" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center" Click="buttonClick">
-            <Button.Template>
+        <Button  x:Name="button1"
+                 Background="Red"
+                 Grid.Column="0"
+                 Width="100"
+                 Height="100"
+                 Foreground="White"
+                 HorizontalAlignment="Right"
+                 VerticalAlignment="Center"
+                 Click="buttonClick"
+                 Style="{StaticResource CircleButton}">
+            <!--Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border
                     x:Name="ButtonBackground"
@@ -76,12 +85,21 @@
                         </VisualStateManager.VisualStateGroups>
                     </Border>
                 </ControlTemplate>
-            </Button.Template>
+            </-->
         </Button>
 
 
-        <Button  x:Name="button2" Background="Green" Grid.Column="2"  Width="100" Height="100" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Click="buttonClick">
-            <Button.Template>
+        <Button  x:Name="button2"
+                 Background="Green"
+                 Grid.Column="2"
+                 Width="100"
+                 Height="100"
+                 Foreground="White"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Center"
+                 Click="buttonClick"
+                 Style="{StaticResource CircleButton}">
+            <!--Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border
                     x:Name="ButtonBackground"
@@ -136,7 +154,7 @@
                         </VisualStateManager.VisualStateGroups>
                     </Border>
                 </ControlTemplate>
-            </Button.Template>
+            </-->
         </Button>
 
 

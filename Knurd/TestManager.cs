@@ -17,8 +17,8 @@ namespace CareBeer.Tests
 		Bubble = 2,
 		ReactionSingle = 4,
 		Reaction = 8,
-		//Speech = 16,
-		All = 15
+		Speech = 16,
+		All = 31
 	}
 
 	class TestManager
@@ -103,6 +103,9 @@ namespace CareBeer.Tests
 
 				case TestId.Reaction:
 					return new ReactionTimeTest(false);
+
+                case TestId.Speech:
+                    return new SpeechTest();
 
 				default:
 					return null;

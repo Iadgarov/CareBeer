@@ -78,7 +78,7 @@ namespace CareBeer
                 button1.IsEnabled = false;
 
 				tester.CalculateResult();
-				summaryMessage();
+				await summaryMessage();
 
 				return;
 
@@ -89,7 +89,7 @@ namespace CareBeer
         }
 
 
-		private async void summaryMessage()
+		private async Task summaryMessage()
 		{
 			string s = "";
 			s += "reaction time mean: " + tester.ReactionTimeMean + "mSec \n";

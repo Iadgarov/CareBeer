@@ -63,7 +63,7 @@ namespace CareBeer
         public double reaction_variance { get; set; }
 
         [JsonProperty(PropertyName = "reaction_mistakes")]
-        public double reaction_mistakes { get; set; }
+        public int reaction_mistakes { get; set; }
 
         // basline data for this test
         [JsonProperty(PropertyName = "B_reactionSingle_mean")]
@@ -79,7 +79,7 @@ namespace CareBeer
         public double B_reaction_variance { get; set; }
 
         [JsonProperty(PropertyName = "B_reaction_mistakes")]
-        public double B_reaction_mistakes { get; set; }
+        public int B_reaction_mistakes { get; set; }
 
 
         /******************************************************************/
@@ -103,6 +103,9 @@ namespace CareBeer
         [JsonProperty(PropertyName = "stepAmplitude")]
         public string stepAmplitude { get; set; }
 
+        [JsonProperty(PropertyName = "strideLengthVariance")]
+        public double strideLengthVariance { get; set; }
+
         //Basline for this test:
         [JsonProperty(PropertyName = "B_acc_energyList")]
         public string B_acc_energyList { get; set; } // the acc raw data
@@ -122,6 +125,9 @@ namespace CareBeer
         [JsonProperty(PropertyName = "B_stepAmplitude")]
         public string B_stepAmplitude { get; set; }
 
+        [JsonProperty(PropertyName = "B_strideLengthVariance")]
+        public double B_strideLengthVariance { get; set; }
+
 
         /******************************************************************/
 
@@ -132,6 +138,9 @@ namespace CareBeer
         [JsonProperty(PropertyName = "gyr_bubble_energyList")]
         public string gyr_bubble_energy { get; set; } // the raw data
 
+        [JsonProperty(PropertyName = "gyr_bubble_energyVariance")]
+        public double gyr_bubble_energyVariance { get; set; } // the raw data
+
         //Basline for this test:
         [JsonProperty(PropertyName = "B_acc_bubble_energyList")]
         public string B_acc_bubble_energy { get; set; } // the acc raw data
@@ -139,12 +148,37 @@ namespace CareBeer
         [JsonProperty(PropertyName = "B_gyr_bubble_energyList")]
         public string B_gyr_bubble_energy { get; set; } // the acc raw data
 
+        [JsonProperty(PropertyName = "B_gyr_bubble_energyVariance")]
+        public double B_gyr_bubble_energyVariance { get; set; }
+
         /******************************************************************/
 
 
         // speech test results:
-        //TODO: fill this in
+        [JsonProperty(PropertyName = "pause_length_mean")]
+        public double pause_length_mean { get; set; }
 
+        [JsonProperty(PropertyName = "pause_length_variance")]
+        public double pause_length_variance { get; set; }
+
+        [JsonProperty(PropertyName = "speech_length_mean")]
+        public double speech_length_mean { get; set; }
+
+        [JsonProperty(PropertyName = "speech_length_variance")]
+        public double speech_length_variance { get; set; }
+
+        // baseline for this test:
+        [JsonProperty(PropertyName = "B_pause_length_mean")]
+        public double B_pause_length_mean { get; set; }
+
+        [JsonProperty(PropertyName = "B_pause_length_variance")]
+        public double B_pause_length_variance { get; set; }
+
+        [JsonProperty(PropertyName = "B_speech_length_mean")]
+        public double B_speech_length_mean { get; set; }
+
+        [JsonProperty(PropertyName = "B_speech_length_variance")]
+        public double B_speech_length_variance { get; set; }
 
 
         /******************************************************************/
