@@ -15,7 +15,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-
+using Windows.Storage;
 
 namespace CareBeer
 {
@@ -30,7 +30,7 @@ namespace CareBeer
             this.InitializeComponent();
             //Current = this;
 
-            
+            Application.Current.Suspending += new SuspendingEventHandler(App_Suspending);
 
 
         }
@@ -38,6 +38,14 @@ namespace CareBeer
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //Window.Current.Content = Current.Frame;
+            if (!EntryPage.user.isSetUp())
+            {
+                testListBtn.IsEnabled = false;
+            }
+            else
+            {
+                testListBtn.IsEnabled = true;
+            }
         }
 
         private void setWelcomeText()
@@ -48,7 +56,7 @@ namespace CareBeer
             }
             else
             {
-                marker.Text = "Please create a sober basline by running the app when sober.";
+                marker.Text = "Please create a sober baseline by running the app when sober.";
             }
         }
 
@@ -62,28 +70,28 @@ namespace CareBeer
             {
 				TestManager.Instance.TestsToRun = TestId.All;
 				//TestManager.Instance.Tests.Add(new ReactionTimeTest());
-				TestManager.Instance.Start();
+				TestManager.Instance.Start(true);
 				//this.Frame.Navigate(typeof(ReactionPageSingle));
             }
 
         }
 
 
-        private void reactionGameButton_Click(object sender, RoutedEventArgs e)
-        {
-                this.Frame.Navigate(typeof(ReactionPageSingle));
-        }
+        //private void reactionGameButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //        this.Frame.Navigate(typeof(ReactionPageSingle));
+        //}
 
-        private void accGraphButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(AccelerometerPage));
-        }
+        //private void accGraphButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.Frame.Navigate(typeof(AccelerometerPage));
+        //}
 
-        private void changeUser_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(EntryPage));
+        //private void changeUser_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.Frame.Navigate(typeof(EntryPage));
 
-        }
+        //}
 
         private void begin_Click(object sender, RoutedEventArgs e)
         {
@@ -94,7 +102,7 @@ namespace CareBeer
             else
             {
                 TestManager.Instance.TestsToRun = TestId.All;
-                TestManager.Instance.Start();
+                TestManager.Instance.Start(false);
             }
         }
 
@@ -106,6 +114,18 @@ namespace CareBeer
         private void testListBtn_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(TestSelectorPage));
+        }
+
+
+        private void App_Suspending(Object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+            ApplicationDataCompositeValue composite = new ApplicationDataCompositeValue();
+            composite["username"] = EntryPage.user.userName;
+            composite["password"] = EntryPage.user.password;
+
+            localSettings.Values["user"] = composite;
         }
     }
 }

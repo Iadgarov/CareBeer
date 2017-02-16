@@ -1,0 +1,91 @@
+﻿<Page
+    x:Class="CareBeer.ResultsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CareBeer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+
+        </Grid.RowDefinitions>
+
+        <Image Source="Images/CareBeerLogo_fancy2.png"
+               Grid.Row="3"
+               VerticalAlignment="Bottom" />
+
+        
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+              Grid.Row="1">
+
+            <Grid.RowDefinitions>
+
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       HorizontalAlignment="Center"
+                       FontWeight="Bold">
+                Results:
+            </TextBlock>
+            <TextBlock Name="gaitTestResult"
+                       Grid.Row="1"
+                       HorizontalAlignment="Center">
+                Gait Test
+            </TextBlock>
+            <TextBlock Name="bubbleTestResult"
+                       Grid.Row="2"
+                       HorizontalAlignment="Center">
+                Bubble Test
+            </TextBlock>
+            <TextBlock Name="singleReactionTestResult"
+                       Grid.Row="3"
+                       HorizontalAlignment="Center">
+                Single-Button Reaction Test
+            </TextBlock>
+            <TextBlock Name="reactionTestResult"
+                       Grid.Row="4"
+                       HorizontalAlignment="Center">
+                Multiple-Button Reaction Test
+            </TextBlock>
+            <TextBlock Name="speechTestResult"
+                       Grid.Row="5"
+                       HorizontalAlignment="Center">
+                Speech Test
+            </TextBlock>
+
+        </Grid>
+
+
+        <Button  x:Name="returnBtn"
+                 Background="Coral"
+                 Grid.Column="0"
+                 Width="100"
+                 Height="100"
+                 Foreground="White"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Click="returnBtn_Click"
+                 Grid.Row="2"
+                 Content="Return"
+                 FontSize="20"
+                 Style="{StaticResource CircleButton}"/>
+        
+
+
+    </Grid>
+</Page>

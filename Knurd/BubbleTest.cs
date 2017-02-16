@@ -15,8 +15,8 @@ namespace CareBeer.Tests
 		public List<double> accelEnergy;
 		public List<double> gyroEnergy;
 
-		private bool _result;
-		public override bool Result => _result;
+		private ResultValue _result = ResultValue.SKIP;
+		public override ResultValue Result => _result;
 
 		public override event EventHandler TestFinishedEvent;
 
@@ -30,15 +30,17 @@ namespace CareBeer.Tests
 
 		public void Finished(bool skipped)
 		{
+
             if (!skipped)
             {
                 updateUser();
                 CloudServices.replaceIneEntity(EntryPage.user); // should await?
+
+                _result = (gyroEnergy.Variance() > 2 * EntryPage.user.B_gyr_bubble_energyVariance ?
+                    ResultValue.FAIL : ResultValue.PASS);
             }
-			
 
-			_result = false; // DUMMY
-
+            TestManager.Instance.Results.BubbleResult = _result;
 			TestFinishedEvent(this, new EventArgs());
 
 		}
@@ -51,14 +53,15 @@ namespace CareBeer.Tests
 			{
 				u.acc_bubble_energy = User.listToString(accelEnergy);
 				u.gyr_bubble_energy = User.listToString(gyroEnergy);
-
+                u.gyr_bubble_energyVariance = gyroEnergy.Variance();
 			}
 			else
 			{
 				u.B_acc_bubble_energy = User.listToString(accelEnergy);
 				u.B_gyr_bubble_energy = User.listToString(gyroEnergy);
+                u.B_gyr_bubble_energyVariance = gyroEnergy.Variance();
 
-				u.bubble_baslineExists = true;
+                u.bubble_baslineExists = true;
 			}
 		}
 	}

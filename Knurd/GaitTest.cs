@@ -12,8 +12,8 @@ namespace CareBeer.Tests
 	{
 		private readonly Type TEST_PAGE = typeof(AccelerometerPage);
 
-		private bool _result;
-		public override bool Result => _result;
+		private ResultValue _result = ResultValue.SKIP;
+		public override ResultValue Result => _result;
 
 		public override event EventHandler TestFinishedEvent;
 
@@ -30,11 +30,17 @@ namespace CareBeer.Tests
             if (!skipped)
             {
                 CloudServices.replaceIneEntity(EntryPage.user); // should await?
+
+
+                _result = (AccVm.getStrideLengthVariance() > 2 * EntryPage.user.B_strideLengthVariance ?
+                    ResultValue.FAIL : ResultValue.PASS);
+
             }
 			
-			_result = false; // DUMMY
+			
+            TestManager.Instance.Results.GaitResult = _result;
 
-			TestFinishedEvent(this, new EventArgs());
+            TestFinishedEvent(this, new EventArgs());
 
 		}
 	}

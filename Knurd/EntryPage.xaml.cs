@@ -62,9 +62,22 @@ namespace CareBeer
             return b;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs args)
         {
-    
+            User tmp = args.Parameter as User;
+            if (tmp != null)
+            {
+                TableResult result = await CloudServices.retrieveEntity(tmp);
+
+                user = (User)(result.Result);
+                if (user != null)
+                {
+                    Frame.Navigate(typeof(MainPage));
+
+                }
+                
+                
+            }
         }
 
 

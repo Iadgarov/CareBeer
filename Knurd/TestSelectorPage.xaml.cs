@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,6 +30,17 @@ namespace CareBeer
         }
 
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+        }
+
+
         private void goBtn_Click(object sender, RoutedEventArgs e)
         {
             TestId test = TestId.None;
@@ -49,9 +61,13 @@ namespace CareBeer
             {
                 test |= TestId.Reaction;
             }
+            if ((bool)speechCheckbox.IsChecked)
+            {
+                test |= TestId.Speech;
+            }
 
             TestManager.Instance.TestsToRun = test;
-            TestManager.Instance.Start();
+            TestManager.Instance.Start(false);
         }
 
     }

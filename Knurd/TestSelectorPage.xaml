@@ -19,6 +19,8 @@
                       x:Name="singleReactionCheckbox" />
             <CheckBox Content="Two-Button Reaction Test"
                       x:Name="reactionCheckbox" />
+            <CheckBox Content="Speech Test"
+                      x:Name="speechCheckbox" />
 
         </StackPanel>
 

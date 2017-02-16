@@ -115,6 +115,10 @@
       <DependentUpon>BubblePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ReactionTimeTest.cs" />
+    <Compile Include="Results.cs" />
+    <Compile Include="ResultsPage.xaml.cs">
+      <DependentUpon>ResultsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -132,6 +136,7 @@
     <Compile Include="SpeechRecordingPage.xaml.cs">
       <DependentUpon>SpeechRecordingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SpeechTest.cs" />
     <Compile Include="TestManager.cs" />
     <Compile Include="TestSelectorPage.xaml.cs">
       <DependentUpon>TestSelectorPage.xaml</DependentUpon>
@@ -175,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ResultsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -210,6 +219,12 @@
     <SDKReference Include="Microsoft.VCLibs.120, Version=14.0">
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Universal</Name>
     </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VoiceActivityDetection\VoiceActivityDetection.csproj">
+      <Project>{b7f24c36-8f29-462f-9944-6e311b973976}</Project>
+      <Name>VoiceActivityDetection</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

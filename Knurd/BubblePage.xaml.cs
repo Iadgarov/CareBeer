@@ -28,7 +28,7 @@ namespace CareBeer
         Accelerometer _accelerometer;
 
         private int time = 0;
-        private const int done = 30;
+        private const int done = 20;
         DispatcherTimer dTimer;
 
 		private BubbleTest tester;
@@ -41,10 +41,11 @@ namespace CareBeer
 
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs args)
         {
-			tester = e.Parameter as BubbleTest;
-            beginMessage();
+            Frame.BackStack.Clear();
+
+            tester = args.Parameter as BubbleTest;
 			begin();        
         }
 
@@ -56,6 +57,8 @@ namespace CareBeer
             if (_accelerometer != null) _accelerometer.ReadingChanged -= ReadingChanged;
             _accelerometer = null;
             _gyrometer = null;
+
+            Frame.BackStack.Clear();
         }
 
         private void begin()
@@ -91,6 +94,10 @@ namespace CareBeer
             if (_accelerometer == null || _gyrometer == null)
             {
                 noGyroMessage();
+            }
+            else
+            {
+                beginMessage();
             }
         }
 

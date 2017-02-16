@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 
 using CareBeer.Tests.ReactionTime;
+using Windows.UI.Core;
 
 namespace CareBeer
 {
@@ -26,7 +27,7 @@ namespace CareBeer
         //private List<ReactionData> data; // This will contain data and be saved to cloud for sober case.
 		private ReactionTimeTest tester;
 
-        const int FLASH_AMOUNT = 3;
+        const int FLASH_AMOUNT = 8;
 
         public ReactionPageSingle()
         {
@@ -35,13 +36,21 @@ namespace CareBeer
 
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs args)
         {
+            Frame.BackStack.Clear();
 
-			tester = e.Parameter as ReactionTimeTest;
+            tester = args.Parameter as ReactionTimeTest;
 			reset();
 			//data = e.Parameter as List<ReactionData>;
 		}
+
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            Frame.BackStack.Clear();
+        }
+
 
         private void reset()
         {
@@ -69,7 +78,7 @@ namespace CareBeer
                 button1.IsEnabled = false;
 
 				tester.CalculateResult();
-				summaryMessage();
+				await summaryMessage();
 
 				return;
 
@@ -80,7 +89,7 @@ namespace CareBeer
         }
 
 
-		private async void summaryMessage()
+		private async Task summaryMessage()
 		{
 			string s = "";
 			s += "reaction time mean: " + tester.ReactionTimeMean + "mSec \n";
