@@ -46,7 +46,6 @@ namespace CareBeer
             Frame.BackStack.Clear();
 
             tester = args.Parameter as BubbleTest;
-            beginMessage();
 			begin();        
         }
 
@@ -95,6 +94,10 @@ namespace CareBeer
             if (_accelerometer == null || _gyrometer == null)
             {
                 noGyroMessage();
+            }
+            else
+            {
+                beginMessage();
             }
         }
 

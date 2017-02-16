@@ -71,8 +71,13 @@ namespace CareBeer.Tests
                 if (isBaseRun)
                 {
                     EntryPage.user.baselineExists = true; // finished baseline tests
+                    CloudServices.replaceIneEntity(EntryPage.user);
+                    ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
                 }
-				((Frame)Window.Current.Content).Navigate(typeof(ResultsPage), Results);
+                else
+                {
+                    ((Frame)Window.Current.Content).Navigate(typeof(ResultsPage), Results); 
+                }
 				return;
 			}
 
