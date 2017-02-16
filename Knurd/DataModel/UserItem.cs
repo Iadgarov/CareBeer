@@ -17,6 +17,7 @@ namespace CareBeer
             this.userName = userName;
             this.password = password;
 
+            baselineExists = false;
             this.reaction_baslineExists = false;
             this.step_baslineExists = false;
             this.speech_baslineExists = false;
@@ -31,6 +32,9 @@ namespace CareBeer
 
         [JsonProperty(PropertyName = "password")]
         public string password { get; set; }
+
+        [JsonProperty(PropertyName = "baselineExists")]
+        public bool baselineExists { get; set; }
 
         [JsonProperty(PropertyName = "reactionSingle_baslineExists")]
         public bool reactionSingle_baslineExists { get; set; }
@@ -213,7 +217,8 @@ namespace CareBeer
 
         public bool isSetUp()
         {
-            return this.reaction_baslineExists && this.speech_baslineExists && this.step_baslineExists;
+            //return this.reaction_baslineExists && this.speech_baslineExists && this.step_baslineExists;
+            return baselineExists;
         }
 
     }

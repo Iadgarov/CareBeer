@@ -119,6 +119,8 @@ namespace CareBeer
 
         private static void updateUserFileds(User userBefore, User userAfter) //TODO: not sure what fields need to be changed- gave them all!
         {
+            userBefore.baselineExists = userAfter.baselineExists;
+
             // walking:
             userBefore.B_acc_energyList = userAfter.B_acc_energyList;
             userBefore.B_gyr_energyList = userAfter.B_gyr_energyList;
@@ -126,6 +128,7 @@ namespace CareBeer
             userBefore.B_minPoints = userAfter.B_minPoints;
             userBefore.B_stepAmplitude = userAfter.B_stepAmplitude;
             userBefore.B_strideLength = userAfter.B_strideLength;
+            userBefore.B_strideLengthVariance = userAfter.B_strideLengthVariance;
             userBefore.acc_energyList = userAfter.acc_energyList;
             userBefore.gyr_energyList = userAfter.gyr_energyList;
             userBefore.maxPoints = userAfter.maxPoints;
@@ -133,6 +136,7 @@ namespace CareBeer
             userBefore.stepAmplitude = userAfter.stepAmplitude;
             userBefore.step_baslineExists = userAfter.step_baslineExists;
             userBefore.strideLength = userAfter.strideLength;
+            userBefore.strideLengthVariance = userAfter.strideLengthVariance;
 
             // bubble:
             userBefore.B_acc_bubble_energy = userAfter.B_acc_bubble_energy;
@@ -140,6 +144,8 @@ namespace CareBeer
             userBefore.acc_bubble_energy = userAfter.acc_bubble_energy;
             userBefore.gyr_bubble_energy = userAfter.gyr_bubble_energy;
             userBefore.bubble_baslineExists = userAfter.bubble_baslineExists;
+            userBefore.B_gyr_bubble_energyVariance = userAfter.B_gyr_bubble_energyVariance;
+            userBefore.gyr_bubble_energyVariance = userAfter.gyr_bubble_energyVariance;
 
             // reaction:
             userBefore.B_reaction_mean = userAfter.B_reaction_mean;
@@ -158,6 +164,14 @@ namespace CareBeer
 
             // speech:
             userBefore.speech_baslineExists = userAfter.speech_baslineExists;
+            userBefore.pause_length_mean = userAfter.pause_length_mean;
+            userBefore.pause_length_variance = userAfter.pause_length_variance;
+            userBefore.speech_length_mean = userAfter.speech_length_mean;
+            userBefore.speech_length_variance = userAfter.speech_length_variance;
+            userBefore.B_pause_length_mean = userAfter.B_pause_length_mean;
+            userBefore.B_pause_length_variance = userAfter.B_pause_length_variance;
+            userBefore.B_speech_length_mean = userAfter.B_speech_length_mean;
+            userBefore.B_speech_length_variance = userAfter.B_speech_length_variance;
 
         }
 

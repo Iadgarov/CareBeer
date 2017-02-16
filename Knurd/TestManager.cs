@@ -41,11 +41,13 @@ namespace CareBeer.Tests
 
 		//public List<DrunkTest> Tests { get; set; }
 		public TestId TestsToRun { get; set; }
-		private int curr;
         public Results Results { get; private set; }
 
+        private int curr;
+        private bool isBaseRun;
 
-        public void Start()
+
+        public void Start(bool isBaseRun)
 		{
 			if (TestsToRun == TestId.None)
 			{
@@ -53,6 +55,7 @@ namespace CareBeer.Tests
 				return;
 			}
 
+            this.isBaseRun = isBaseRun;
             Results = new Results();
             curr = 1;
 			Next();
@@ -65,6 +68,10 @@ namespace CareBeer.Tests
 			DrunkTest next = getNextTest();
 			if (next == null)
 			{
+                if (isBaseRun)
+                {
+                    EntryPage.user.baselineExists = true; // finished baseline tests
+                }
 				((Frame)Window.Current.Content).Navigate(typeof(ResultsPage), Results);
 				return;
 			}

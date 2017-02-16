@@ -28,7 +28,7 @@ namespace CareBeer
 
 		ReactionTimeTest tester;
 
-        const int FLASH_AMOUNT = 3;
+        const int FLASH_AMOUNT = 8;
 
         public ReactionPage()
         {

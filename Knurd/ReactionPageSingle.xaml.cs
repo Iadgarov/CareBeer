@@ -27,7 +27,7 @@ namespace CareBeer
         //private List<ReactionData> data; // This will contain data and be saved to cloud for sober case.
 		private ReactionTimeTest tester;
 
-        const int FLASH_AMOUNT = 3;
+        const int FLASH_AMOUNT = 8;
 
         public ReactionPageSingle()
         {

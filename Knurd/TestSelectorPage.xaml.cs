@@ -67,7 +67,7 @@ namespace CareBeer
             }
 
             TestManager.Instance.TestsToRun = test;
-            TestManager.Instance.Start();
+            TestManager.Instance.Start(false);
         }
 
     }

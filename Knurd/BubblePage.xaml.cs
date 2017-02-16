@@ -28,7 +28,7 @@ namespace CareBeer
         Accelerometer _accelerometer;
 
         private int time = 0;
-        private const int done = 30;
+        private const int done = 20;
         DispatcherTimer dTimer;
 
 		private BubbleTest tester;
