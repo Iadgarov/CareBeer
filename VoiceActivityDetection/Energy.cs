@@ -14,7 +14,7 @@ namespace WebRtc.CommonAudio.SignalProcessing
             int i;
             int scaling = ScalingSquare.WebRtcSpl_GetScalingSquare(vector, vector_length, vector_length);
             int looptimes = vector_length;
-            ref Int16[] vectorptr = ref vector;
+            Int16[] vectorptr = vector;
 
             for (i = 0; i < looptimes; i++)
             {

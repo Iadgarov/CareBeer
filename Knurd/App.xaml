@@ -4,7 +4,73 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CareBeer"
     RequestedTheme="Light">
-    
-    
+
+    <Application.Resources>
+        <Style x:Key="CircleButton"
+               TargetType="Button">
+            <!--Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0.5,0"
+                                         EndPoint="0.5,1">
+                        <GradientStop Offset="0"
+                                      Color="Gold" />
+                        <GradientStop Offset="1"
+                                      Color="Goldenrod" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </-->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBackground"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="300"
+                                Background="{TemplateBinding Background}">
+                            <Border x:Name="PressedHighlightBackground"
+                                    Background="Transparent"
+                                    CornerRadius="300">
+                                <ContentControl x:Name="ContentContainer"
+                                                Foreground="{TemplateBinding Foreground}"
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                Padding="{TemplateBinding Padding}"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            </Border>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentContainer.Foreground"
+                                                    Value="Pink" />
+                                            <Setter Target="PressedHighlightBackground.Background"
+                                                    Value="Red" />
+                                            <Setter Target="ButtonBackground.BorderBrush"
+                                                    Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="ContentContainer.Foreground"
+                                                    Value="Black" />
+                                            <Setter Target="PressedHighlightBackground.Background"
+                                                    Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                            <Setter Target="ButtonBackground.BorderBrush"
+                                                    Value="{StaticResource AppBarBackgroundThemeBrush}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Application.Resources>
 
 </Application>

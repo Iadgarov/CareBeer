@@ -8,7 +8,7 @@ namespace CareBeer.Tests
 {
 	abstract class DrunkTest
 	{
-		abstract public bool Result { get; }
+		abstract public ResultValue Result { get; }
 		abstract public void RunTest();
 
 		//public delegate void EventHandler(object sender, EventArgs args);

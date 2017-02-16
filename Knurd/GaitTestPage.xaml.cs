@@ -20,6 +20,7 @@ using Windows.UI.Popups;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using CareBeer.Tests;
+using Windows.UI.Core;
 
 namespace CareBeer
 {
@@ -53,9 +54,11 @@ namespace CareBeer
         }
 
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs args)
         {
-			tester = e.Parameter as GaitTest;
+            Frame.BackStack.Clear();
+
+            tester = args.Parameter as GaitTest;
 
             if (Accelerometer.GetDefault() == null)
             {
@@ -76,6 +79,7 @@ namespace CareBeer
             base.OnNavigatedFrom(e);
             tester.AccVm.Stop(true); // stop prematurly
 
+            Frame.BackStack.Clear();
         }
 
 

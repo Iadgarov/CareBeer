@@ -36,7 +36,7 @@ namespace WebRtc.CommonAudio.Vad
         static void HighPassFilter(Int16[] data_in, int data_length, Int16[] filter_state, Int16[] data_out)
         {
             int i;
-            ref Int16[] in_ptr = ref data_in;
+            Int16[] in_ptr = data_in;
             ref Int16[] out_ptr = ref data_out;
             Int32 tmp32 = 0;
             int in_idx = 0, out_idx = 0;
@@ -102,7 +102,7 @@ namespace WebRtc.CommonAudio.Vad
                 tmp32 = state32 + Macros.WEBRTC_SPL_MUL_16_16(filter_coefficient, data_in[in_idx]);
                 tmp16 = (Int16)(tmp32 >> 16);  // Q(-1)
                 data_out[out_idx++] = tmp16;
-                state32 = (((Int32)(data_in[in_idx])) << 14); // Q14
+                state32 = data_in[in_idx] << 14; // Q14
                 state32 -= Macros.WEBRTC_SPL_MUL_16_16(filter_coefficient, tmp16);  // Q14
                 state32 <<= 1;  // Q15.
                 in_idx += 2;
@@ -284,9 +284,9 @@ namespace WebRtc.CommonAudio.Vad
 
             // Initialize variables for the first SplitFilter().
             int frequency_band = 0;
-            ref Int16[] in_ptr = ref data_in;  // [0 - 4000] Hz.
-            ref Int16[] hp_out_ptr = ref hp_120;  // [2000 - 4000] Hz.
-            ref Int16[] lp_out_ptr = ref lp_120;  // [0 - 2000] Hz.
+            Int16[] in_ptr = data_in;  // [0 - 4000] Hz.
+            Int16[] hp_out_ptr = hp_120;  // [2000 - 4000] Hz.
+            Int16[] lp_out_ptr = lp_120;  // [0 - 2000] Hz.
 
             Debug.Assert(data_length >= 0);
             Debug.Assert(data_length <= 240);

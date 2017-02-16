@@ -83,7 +83,7 @@ namespace WebRtc.CommonAudio.Vad
                 else
                 {
                     // Too old value. Remove from memory and shift larger values downwards.
-                    for (j = i; j < 16; j++)
+                    for (j = i; j < 15; j++) // CHECK: original is j < 16
                     {
                         smallest_values[offset + j] = smallest_values[offset + j + 1];
                         age[offset + j] = age[offset + j + 1];

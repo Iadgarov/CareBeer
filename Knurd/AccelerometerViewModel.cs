@@ -136,10 +136,12 @@ namespace CareBeer
             return stepEnergy.Count;
         }
 
+
         public double getStrideLengthVariance()
         {
             return strideLenghts.Variance();
         }
+
 
         public double getStepEnergyVariance()
         {
@@ -434,6 +436,7 @@ namespace CareBeer
                 u.minPoints = User.listToString(min_points);
                 u.stepAmplitude = User.listToString(stepEnergy);
                 u.strideLength = User.listToString(strideLenghts);
+                u.strideLengthVariance = getStrideLengthVariance();
             }
             else
             {
@@ -443,6 +446,8 @@ namespace CareBeer
                 u.B_minPoints = User.listToString(min_points);
                 u.B_stepAmplitude = User.listToString(stepEnergy);
                 u.B_strideLength = User.listToString(strideLenghts);
+                u.B_strideLengthVariance = getStrideLengthVariance();
+
                 u.step_baslineExists = true;
             }
         }

@@ -13,7 +13,7 @@ namespace WebRtc.CommonAudio.Vad
 
         public int vad;
         public Int32[] downsampling_filter_states = new Int32[4];
-        public WebRtcSpl_State48khzTo8khz state_48_to_8;
+        public WebRtcSpl_State48khzTo8khz state_48_to_8 = new WebRtcSpl_State48khzTo8khz();
         public Int16[] noise_means = new Int16[VadCore.kTableSize];
         public Int16[] speech_means = new Int16[VadCore.kTableSize];
         public Int16[] noise_stds = new Int16[VadCore.kTableSize];
@@ -586,6 +586,7 @@ namespace WebRtc.CommonAudio.Vad
 
             // Initialization of downsampling filter state.
             //memset(self.downsampling_filter_states, 0, sizeof(self.downsampling_filter_states));
+            Array.Clear(self.downsampling_filter_states, 0, self.downsampling_filter_states.Length);
 
             // Initialization of 48 to 8 kHz downsampling.
             Resample.WebRtcSpl_ResetResample48khzTo8khz(self.state_48_to_8);
@@ -609,9 +610,12 @@ namespace WebRtc.CommonAudio.Vad
             // Initialize splitting filter states.
             //memset(self.upper_state, 0, sizeof(self.upper_state));
             //memset(self.lower_state, 0, sizeof(self.lower_state));
+            Array.Clear(self.upper_state, 0, self.upper_state.Length);
+            Array.Clear(self.lower_state, 0, self.upper_state.Length);
 
             // Initialize high pass filter states.
             //memset(self.hp_filter_state, 0, sizeof(self.hp_filter_state));
+            Array.Clear(self.hp_filter_state, 0, self.hp_filter_state.Length);
 
             // Initialize mean value memory, for WebRtcVad_FindMinimum().
             for (i = 0; i < kNumChannels; i++)
