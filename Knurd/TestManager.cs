@@ -17,14 +17,15 @@ namespace CareBeer.Tests
 		Bubble = 2,
 		ReactionSingle = 4,
 		Reaction = 8,
-		//Speech = 16,
-		All = 15
+		Speech = 16,
+		All = 31
 	}
 
 	class TestManager
 	{
 		private static TestManager instance;
 		private TestManager() { }
+        
 
 		public static TestManager Instance
 		{
@@ -40,9 +41,13 @@ namespace CareBeer.Tests
 
 		//public List<DrunkTest> Tests { get; set; }
 		public TestId TestsToRun { get; set; }
-		private int curr;
+        public Results Results { get; private set; }
 
-		public void Start()
+        private int curr;
+        private bool isBaseRun;
+
+
+        public void Start(bool isBaseRun)
 		{
 			if (TestsToRun == TestId.None)
 			{
@@ -50,7 +55,9 @@ namespace CareBeer.Tests
 				return;
 			}
 
-			curr = 1;
+            this.isBaseRun = isBaseRun;
+            Results = new Results();
+            curr = 1;
 			Next();
 			
 		}
@@ -61,8 +68,16 @@ namespace CareBeer.Tests
 			DrunkTest next = getNextTest();
 			if (next == null)
 			{
-				// TODO: display results
-				((Frame)Window.Current.Content).Navigate(typeof(MainPage)); // in the meantime
+                if (isBaseRun)
+                {
+                    EntryPage.user.baselineExists = true; // finished baseline tests
+                    CloudServices.replaceIneEntity(EntryPage.user);
+                    ((Frame)Window.Current.Content).Navigate(typeof(MainPage));
+                }
+                else
+                {
+                    ((Frame)Window.Current.Content).Navigate(typeof(ResultsPage), Results); 
+                }
 				return;
 			}
 
@@ -100,6 +115,9 @@ namespace CareBeer.Tests
 
 				case TestId.Reaction:
 					return new ReactionTimeTest(false);
+
+                case TestId.Speech:
+                    return new SpeechTest();
 
 				default:
 					return null;

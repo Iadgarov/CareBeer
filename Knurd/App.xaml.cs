@@ -1,7 +1,9 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
+using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -38,7 +40,7 @@ namespace CareBeer
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
 
 #if DEBUG
@@ -60,25 +62,42 @@ namespace CareBeer
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            //SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             SystemNavigationManager.GetForCurrentView().BackRequested += App.App_BackRequested;
 
-            if (rootFrame.Content == null)
+            if (args.PreviousExecutionState == ApplicationExecutionState.Terminated ||
+                    args.PreviousExecutionState == ApplicationExecutionState.ClosedByUser)
             {
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter
-                rootFrame.Navigate(typeof(EntryPage), e.Arguments);
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                ApplicationDataCompositeValue composite = (ApplicationDataCompositeValue)localSettings.Values["user"];
+
+                User user = null;
+                if (composite != null)
+                {
+                    user = new User((string)composite["username"], (string)composite["password"]);
+                    localSettings.Values.Remove("user");
+                }
+                
+
+                rootFrame.Navigate(typeof(EntryPage), user);
             }
+            else
+            {
+                rootFrame.Navigate(typeof(EntryPage), args.Arguments);
+            }
+
+            //if (rootFrame.Content == null)
+            //{
+            //    // When the navigation stack isn't restored navigate to the first page,
+            //    // configuring the new page by passing required information as a navigation
+            //    // parameter
+            //    rootFrame.Navigate(typeof(EntryPage), args.Arguments);
+            //}
             // Ensure the current window is active
             Window.Current.Activate();
 
@@ -90,11 +109,25 @@ namespace CareBeer
         {
 
             Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame != null && rootFrame.CanGoBack)
+            if (rootFrame == null)
+                return;
+
+            // Navigate back if possible, and if the event has not 
+            // already been handled .
+            if (rootFrame.CurrentSourcePageType == typeof(MainPage))
+            {
+                // ignore the event. We want the default system behavior
+                e.Handled = false;
+            }
+            else
             {
                 e.Handled = true;
-                rootFrame.GoBack();
+
+                if (rootFrame.CanGoBack)
+                    rootFrame.GoBack();
             }
+
+            
         }
 
 

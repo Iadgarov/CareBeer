@@ -22,8 +22,19 @@
         <Image Source="Images/CareBeerLogo_fancy2.png" Grid.Row="6" VerticalAlignment="Bottom"/>
         <TextBlock Name="marker" Height="50" HorizontalAlignment="Center" Grid.Row="0"></TextBlock>
 
-        <Button  x:Name="beginButton" Content="Begin" FontSize="80" Background="#FF6D3670" Grid.Row="1"  Width="300" Height="300" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="begin_Click">
-            <Button.Template>
+        <Button  x:Name="beginButton"
+                 Content="Begin"
+                 FontSize="80"
+                 Background="#FF6D3670"
+                 Grid.Row="1"
+                 Width="300"
+                 Height="300"
+                 Foreground="White"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Click="begin_Click"
+                 Style="{StaticResource CircleButton}">
+            <!--Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border
                     x:Name="ButtonBackground"
@@ -78,7 +89,7 @@
                         </VisualStateManager.VisualStateGroups>
                     </Border>
                 </ControlTemplate>
-            </Button.Template>
+            </-->
         </Button>
 
 

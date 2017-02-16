@@ -16,20 +16,19 @@ namespace CareBeer.Tests.ReactionTime
 
 		private bool single;
 
-		private double threshold;
-
 		public double ReactionTimeMean { get; private set; }
 		public double ReactionTimeVar { get; private set; }
 		public int Mistakes { get; private set; }
 
-		private bool _result;
-		public override bool Result => _result;
+		private ResultValue _result;
+		public override ResultValue Result => _result;
 		public override event EventHandler TestFinishedEvent;
 
 		public List<ReactionData> Data;
 
 
 		public ReactionTimeTest(bool s) { single = s; }
+
 
 		public override void RunTest()
 		{
@@ -41,6 +40,7 @@ namespace CareBeer.Tests.ReactionTime
 			else ((Frame)Window.Current.Content).Navigate(TEST_PAGE_MULTIPLE, this);
 		}
 
+
 		public void Finished()
 		{
 			if (single)
@@ -48,8 +48,19 @@ namespace CareBeer.Tests.ReactionTime
 			else updateUserMultiple();
 
 			CloudServices.replaceIneEntity(EntryPage.user); // should await?
+            
 
-			TestFinishedEvent(this, new EventArgs());
+            //_result = ResultValue.PASS; // DUMMY
+            if (single)
+            {
+                TestManager.Instance.Results.SingleReactionResult = _result;
+            }
+            else
+            {
+                TestManager.Instance.Results.ReactionResult = _result;
+            }
+
+            TestFinishedEvent(this, new EventArgs());
 			
 		}
 
@@ -63,9 +74,30 @@ namespace CareBeer.Tests.ReactionTime
 				Mistakes = ReactionData.mistakes(Data);
 			}
 
-			_result = false; // DUMMY
+            double currRes = formula(ReactionTimeVar, ReactionTimeMean, Mistakes);
+            double baseRes;
+            if (single)
+            {
+                baseRes = formula(EntryPage.user.B_reactionSingle_variance, EntryPage.user.B_reactionSingle_mean, 0);
+            }
+            else
+            {
+                baseRes = formula(EntryPage.user.B_reaction_variance, EntryPage.user.B_reaction_mean, EntryPage.user.B_reaction_mistakes);
+            }
+
+            _result = (currRes > baseRes ? ResultValue.FAIL : ResultValue.PASS);
 		}
 
+
+        // mean + (SD * (mistake# + 1))
+        private static double formula(double var, double mean, int mistakes)
+        {
+            double res = Math.Pow(var, 0.5); // standrad deviation
+            res *= mistakes + 1;
+            res += mean;
+
+            return res;
+        }
 
 		private void updateUserSingle()
 		{

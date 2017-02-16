@@ -20,8 +20,19 @@
 
         <TextBlock Name="instructions" FontSize="14" TextWrapping="Wrap" Margin="15">
             When ready press 'Start' and begin walking. After approximately 50 steps of normal walking click 'Stop'</TextBlock>
-        <Button  x:Name="startStopButton" Content="Start" FontSize="80" Background="#FFE8831D" Grid.Row="1"  Width="300" Height="300" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btn_Click">
-            <Button.Template>
+        <Button  x:Name="startStopButton"
+                 Content="Start"
+                 FontSize="80"
+                 Background="#FFE8831D"
+                 Grid.Row="1"
+                 Width="300"
+                 Height="300"
+                 Foreground="White"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Click="btn_Click"
+                 Style="{StaticResource CircleButton}">
+            <!--Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border
                     x:Name="ButtonBackground"
@@ -76,7 +87,7 @@
                         </VisualStateManager.VisualStateGroups>
                     </Border>
                 </ControlTemplate>
-            </Button.Template>
+            </-->
         </Button>
 
        

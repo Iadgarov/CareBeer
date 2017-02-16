@@ -13,6 +13,7 @@ using Windows.UI;
 using System.Diagnostics;
 using System.Collections.Generic;
 using CareBeer.Tests.ReactionTime;
+using Windows.UI.Core;
 
 namespace CareBeer
 {
@@ -27,7 +28,7 @@ namespace CareBeer
 
 		ReactionTimeTest tester;
 
-        const int FLASH_AMOUNT = 3;
+        const int FLASH_AMOUNT = 8;
 
         public ReactionPage()
         {
@@ -36,13 +37,20 @@ namespace CareBeer
 
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs args)
         {
-			tester = e.Parameter as ReactionTimeTest;
+            Frame.BackStack.Clear();
+
+            tester = args.Parameter as ReactionTimeTest;
 			reset();
 
         }
 
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            Frame.BackStack.Clear();
+        }
 
 
         private void reset()

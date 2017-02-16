@@ -19,8 +19,17 @@
         </Grid.ColumnDefinitions>
 
 
-        <Button  x:Name="button1" Background="DarkCyan" Grid.Column="0"  Width="200" Height="200" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="buttonClick">
-            <Button.Template>
+        <Button  x:Name="button1"
+                 Background="DarkCyan"
+                 Grid.Column="0"
+                 Width="200"
+                 Height="200"
+                 Foreground="White"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Click="buttonClick"
+                 Style="{StaticResource CircleButton}">
+            <!--Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border
                     x:Name="ButtonBackground"
@@ -75,7 +84,7 @@
                         </VisualStateManager.VisualStateGroups>
                     </Border>
                 </ControlTemplate>
-            </Button.Template>
+            </-->
         </Button>
 
 

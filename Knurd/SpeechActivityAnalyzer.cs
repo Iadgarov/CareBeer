@@ -1,5 +1,4 @@
 ﻿using System;
-
 using System.Runtime.InteropServices;
 using Windows.Media;
 using CareBeer;
@@ -7,42 +6,24 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.Foundation;
+using WebRtc.CommonAudio.Vad;
 
 namespace CareBeer
 {
-	class SpeechActivityAnalyzer
+    using VadInst = VadInstT;
+
+    class SpeechActivityAnalyzer
 	{
-		[DllImport("VadWrapperDll.dll")]
-		public static extern IntPtr VadWrapperCreate();
-		[DllImport("VadWrapperDll.dll")]
-		public static extern void VadWrapperDelete(IntPtr pWrapper);
-		[DllImport("VadWrapperDll.dll")]
-		unsafe public static extern int VadWrapperProcess(IntPtr pWrapper, int sampleRate, Int16* audioFrame, int frameLength);
-		[DllImport("VadWrapperDll.dll")]
-		public static extern int VadWrapperValidate(IntPtr pWrapper, int rate, int frameLength);
-		[DllImport("VadWrapperDll.dll")]
-		public static extern int VadWrapperSetMode(IntPtr pWrapper, int mode);
+        
+		//private static VadInst vad;
 
-		private static IntPtr vad;
-		private static readonly VadDestructor vadDtor; // used in order to free the static vad pointer
-
-		static SpeechActivityAnalyzer()
-		{
-			// create and initialize the vad struct
-			try
-			{
-				vad = VadWrapperCreate();
-			}
-			catch (TypeInitializationException e)
-			{
-				SpeechRecordingPage.ShowToastNotification(e.ToString(), 15);
-			}
-
-
-			SpeechRecordingPage.ShowToastNotification("***********");
-			VadWrapperSetMode(vad, 3);
-			vadDtor = new VadDestructor();
-		}
+		//static SpeechActivityAnalyzer()
+		//{
+		//	// create and initialize the vad struct
+  //          vad = WebRtcVad.WebRtcVad_Create();
+  //          WebRtcVad.WebRtcVad_Init(vad);
+  //          WebRtcVad.WebRtcVad_set_mode(vad, 3);
+		//}
 
 		private StringBuilder voiceStringBuilder;
 
@@ -56,6 +37,7 @@ namespace CareBeer
 		public double SpeechLengthVariance { get; private set; }
 		public double SpeechLengthMean { get; private set; }
 
+
 		public SpeechActivityAnalyzer()
 		{
 			voiceStringBuilder = new StringBuilder();
@@ -63,34 +45,39 @@ namespace CareBeer
 			VoicedUnvoicedLengthsVector = new List<int>();
 		}
 
-		private static IEnumerable<byte[]> GetFrames(int frameLen, byte[] audio, int sampleRate)
+		private static IEnumerable<Int16[]> GetFrames(int frameLen, Int16[] audio, int sampleRate)
 		{
-			int n = (sampleRate * frameLen / 1000) * 2; // frameLen in msec. multiply by 2 to get 16-bit samples
+			int n = (sampleRate * frameLen / 1000); // frameLen in msec
 			int offset = 0;
 
 			while (offset + n < audio.Length)
 			{
-				byte[] frame = new byte[n];
+				Int16[] frame = new Int16[n];
 				Array.Copy(audio, offset, frame, 0, n);
 				offset += n;
 				yield return frame;
 			}
 		}
 
-		unsafe public void AnalyzeAudio(byte[] audio, int sampleRate, int frameLen)
+		public void AnalyzeAudio(Int16[] audio, int sampleRate, int frameLen)
 		{
-			foreach (byte[] frame in GetFrames(frameLen, audio, sampleRate))
+            VadInst vad = WebRtcVad.WebRtcVad_Create();
+
+            foreach (Int16[] frame in GetFrames(frameLen, audio, sampleRate))
 			{
-				int isVoiced;
+                WebRtcVad.WebRtcVad_Init(vad);
+                WebRtcVad.WebRtcVad_set_mode(vad, 3);
 
-				fixed (byte *raw = frame)
-				{
-					Int16 *data = (Int16*)raw;
-					int valid = VadWrapperValidate(vad, sampleRate, frame.Length / 2);
-					isVoiced = VadWrapperProcess(vad, sampleRate, data, frame.Length / 2);
-				}
+                int isVoiced = WebRtcVad.WebRtcVad_Process(vad, sampleRate, frame, frame.Length);
 
-				voiceStringBuilder.Append(isVoiced);
+                //fixed (byte *raw = frame)
+                //{
+                //	Int16 *data = (Int16*)raw;
+                //	int valid = WebRtcVad.WebRtcVad_ValidRateAndFrameLength(sampleRate, frame.Length / 2);
+                //	isVoiced = VadWrapperProcess(vad, sampleRate, data, frame.Length / 2);
+                //}
+
+                voiceStringBuilder.Append(isVoiced);
 				VoicedUnvoicedVector.Add((byte) isVoiced);
 			}
 
@@ -137,7 +124,7 @@ namespace CareBeer
 				else
 				{
 					VoicedUnvoicedLengthsVector.Add(count);
-					count = 0;
+					count = 1;
 					curr = 1 - curr;
 				}
 			}
@@ -155,15 +142,6 @@ namespace CareBeer
 			SpeechLengthVariance = speechLengthVector.Select<int, double>(i => i).ToList().Variance(SpeechLengthMean);
 		}
 
-
-
-		private sealed class VadDestructor
-		{
-			~VadDestructor()
-			{
-				VadWrapperDelete(vad);
-			}
-		}
 
 
 		[ComImport]
