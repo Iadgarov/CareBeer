@@ -30,6 +30,7 @@ namespace CareBeer
 
         protected override void OnNavigatedTo(NavigationEventArgs args)
         {
+
             Frame.BackStack.Clear();
             setResultsText((Results)args.Parameter);
         }
@@ -43,11 +44,33 @@ namespace CareBeer
 
         private void setResultsText(Results res)
         {
+            int fails = countFails(res);
+            if (fails >= 2)
+            {
+                resultSumation.Text = countFails(res) + " Tests Failed. You're Drunk!";
+            }
+            else
+            {
+                resultSumation.Text = countFails(res) + " Tests Failed. You may be alright.";
+            }
+            
+
             gaitTestResult.Text = "Gait Test - " + res.GaitResult.ToString();
             bubbleTestResult.Text = "Bubble Test - " + res.BubbleResult.ToString();
             singleReactionTestResult.Text = "Single-Button Reaction Test - " + res.SingleReactionResult.ToString();
             reactionTestResult.Text = "Multiple-Button Reaction Test - " + res.ReactionResult.ToString();
             speechTestResult.Text = "Speech Test - " + res.SpeechResult.ToString();
+        }
+
+        private int countFails(Results res)
+        {
+            int temp = 0;
+            temp += res.GaitResult == ResultValue.FAIL ? 1 : 0;
+            temp += res.BubbleResult == ResultValue.FAIL ? 1 : 0;
+            temp += res.ReactionResult == ResultValue.FAIL ? 1 : 0;
+            temp += res.SingleReactionResult == ResultValue.FAIL ? 1 : 0;
+            temp += res.SpeechResult == ResultValue.FAIL ? 1 : 0;
+            return temp;
         }
 
         private void returnBtn_Click(object sender, RoutedEventArgs e)

@@ -64,6 +64,7 @@ namespace CareBeer
 
         protected override async void OnNavigatedTo(NavigationEventArgs args)
         {
+            
             User tmp = args.Parameter as User;
             if (tmp != null)
             {
@@ -78,6 +79,7 @@ namespace CareBeer
                 
                 
             }
+             
         }
 
 

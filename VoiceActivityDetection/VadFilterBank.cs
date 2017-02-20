@@ -36,8 +36,10 @@ namespace WebRtc.CommonAudio.Vad
         static void HighPassFilter(Int16[] data_in, int data_length, Int16[] filter_state, Int16[] data_out)
         {
             int i;
-            Int16[] in_ptr = data_in;
-            ref Int16[] out_ptr = ref data_out;
+            //Int16[] in_ptr = data_in;
+            Int16[] in_ptr = new Int16[data_in.Length];
+            data_in.CopyTo(in_ptr, 0);
+            Int16[] out_ptr = data_out;
             Int32 tmp32 = 0;
             int in_idx = 0, out_idx = 0;
 

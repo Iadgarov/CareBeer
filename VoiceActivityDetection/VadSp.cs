@@ -67,8 +67,8 @@ namespace WebRtc.CommonAudio.Vad
             Int32 tmp32 = 0;
             // Pointer to memory for the 16 minimum values and the age of each value of
             // the |channel|.
-            ref Int16[] age = ref self.index_vector;
-            ref Int16[] smallest_values = ref self.low_value_vector;
+            Int16[] age = self.index_vector;
+            Int16[] smallest_values = self.low_value_vector;
 
             Debug.Assert(channel < VadCore.kNumChannels);
 

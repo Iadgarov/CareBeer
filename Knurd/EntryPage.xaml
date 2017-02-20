@@ -9,12 +9,12 @@
 
     <Grid Name="grid">
         <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1"
+            <LinearGradientBrush EndPoint="0.5,1.1"
                                  StartPoint="0.5,0">
-                <GradientStop Color="#FF616C7C" />
+                <GradientStop Color="#FF908095" />
                 <GradientStop Color="White"
                               Offset="0.722" />
-                <GradientStop Color="#FFBBBBBB"
+                <GradientStop Color="#FFCBCBCB"
                               Offset="0.406" />
             </LinearGradientBrush>
         </Grid.Background>
@@ -27,9 +27,8 @@
             <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+           
 
             <RowDefinition Height="3*" />
 
@@ -39,10 +38,37 @@
         <Image Source="Images/careBeer2.0.png" Margin="10" Grid.Row="0" VerticalAlignment="Bottom"/>
         <TextBox Name="usernameIn" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="200" Grid.Row="1" PlaceholderText="username" ></TextBox>
         <PasswordBox Name="passwordIn" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Grid.Row="2" PlaceholderText="password" PasswordChar="*" ></PasswordBox>
-        <Button Name="go" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="3" Height="40" Width="100" Content="Go" FontSize="20" Click="go_Click"></Button>
-        <Button Name="register" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="4" Height="40" Width="100" Content="Register" FontSize="20" Click="register_Click"></Button>
+        
+        <Button Name="go" 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Left" 
+                Grid.Row="3" 
+                Height="100" Width="100" 
+                Content="Log In" 
+                FontSize="20" 
+                Click="go_Click"
+                Margin="50,0"
+                Background="#FF82BD9A"
+                Style="{StaticResource CircleButton}">
+            
+        </Button>
+        
+        <Button Name="register" 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Right" 
+                Grid.Row="3" 
+                Height="100" Width="100" 
+                Content="Register" 
+                FontSize="20" 
+                Click="register_Click"
+                Margin="50,0"
+                Background="#FF82BD9A"
+                Style="{StaticResource CircleButton}" >
+            
+        </Button>
+        <!--
         <Button Name="toFile" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="5" Height="40" Width="100" Content="toFile" FontSize="20" Click="toFile_Click"></Button>
-
+        !-->
         <Image Source="Images/CareBeerLogo_fancy2.png" Grid.Row="6" VerticalAlignment="Bottom"/>
 
 

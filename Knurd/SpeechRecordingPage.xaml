@@ -48,11 +48,15 @@
                       VerticalContentAlignment="Center"
                       VerticalScrollBarVisibility="Visible"
                       Grid.Row="0"
-                      Visibility="Collapsed">
+                      Margin="10,20"
+                      Visibility="Collapsed"
+                      BorderBrush="Black"
+                      BorderThickness="2">
             <TextBlock x:Name="textBlock"
                        TextWrapping="Wrap"
                        HorizontalAlignment="Center"
-                       Height="Auto">
+                       Height="Auto"
+                       Margin="10,30">
                         Fury said to a mouse,<LineBreak />
                         That he met in the house,<LineBreak />
                         “Let us both go to law: I will prosecute YOU.<LineBreak />

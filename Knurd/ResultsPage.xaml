@@ -22,7 +22,15 @@
                Grid.Row="3"
                VerticalAlignment="Bottom" />
 
-        
+        <TextBlock Name ="resultSumation"
+                   Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   FontWeight="Bold"
+                   Margin="0,30">
+                
+        </TextBlock>
+
+
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
               Grid.Row="1">
 
@@ -40,7 +48,7 @@
             <TextBlock Grid.Row="0"
                        HorizontalAlignment="Center"
                        FontWeight="Bold">
-                Results:
+                Details:
             </TextBlock>
             <TextBlock Name="gaitTestResult"
                        Grid.Row="1"

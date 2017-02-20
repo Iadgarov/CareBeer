@@ -63,7 +63,7 @@ namespace WebRtc.CommonAudio.Vad
         //                       has not been initialized).
         public static int WebRtcVad_set_mode(VadInst handle, int mode)
         {
-            ref VadInst self = ref handle;
+            VadInst self = handle;
 
             if (handle == null)
             {
@@ -93,7 +93,7 @@ namespace WebRtc.CommonAudio.Vad
         public static int WebRtcVad_Process(VadInst handle, int fs, Int16[] audio_frame, int frame_length)
         {
             int vad = -1;
-            ref VadInst self = ref handle;
+            VadInst self = handle;
 
             if (handle == null)
             {
