@@ -15,7 +15,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="10*" />
+            <RowDefinition Height="9*" />
 
             <RowDefinition Height="Auto" />
 

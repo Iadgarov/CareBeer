@@ -9,8 +9,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
@@ -25,21 +25,23 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <TextBlock TextWrapping="Wrap" Grid.Row="0">
-            <Bold>Welcome to CareBeer!</Bold><LineBreak /><LineBreak />
-            This app was created as a means to promote responsible drinking by bringing attention to the various effects
-alcohol has on our minds and bodies.<LineBreak />
-The app will take you through a series of short tests which will examine your stability and reaction time,
-as well as your walking and speech patterns. These tests are based off scientific research that can be found online.<LineBreak />
-But first, we'll need you to go through the tests when sober, so that the app can be tuned to your own body
-and give you meaningful results. Any subsequent tests you take will be compared to this baseline. 
-You can also pick and choose any tests you want to perform at any given time from the list that will become available once the baseline is complete.<LineBreak /><LineBreak />
+        <ScrollViewer Height="Auto">
+            <TextBlock TextWrapping="Wrap" Grid.Row="0">
+                <Bold>Welcome to CareBeer!</Bold><LineBreak /><LineBreak />
+                This app was created as a means to promote responsible drinking by bringing attention to the various effects
+    alcohol has on our minds and bodies.<LineBreak />
+    The app will take you through a series of short tests which will examine your stability and reaction time,
+    as well as your walking and speech patterns. These tests are based off scientific research that can be found online.<LineBreak />
+    But first, we'll need you to go through the tests when sober, so that the app can be tuned to your own body
+    and give you meaningful results. Any subsequent tests you take will be compared to this baseline. 
+    You can also pick and choose any tests you want to perform at any given time from the list that will become available once the baseline is complete.<LineBreak /><LineBreak />
 
-Please keep in mind that this app cannot estimate the exact amount of alcohol you've consumed, nor how much remains in your bloodstream.<LineBreak /><LineBreak />
+    Please keep in mind that this app cannot estimate the exact amount of alcohol you've consumed, nor how much remains in your bloodstream.<LineBreak /><LineBreak />
 
-Take care and have fun!<LineBreak />
-The CareBeer team
-        </TextBlock>
+    Take care and have fun!<LineBreak />
+    The CareBeer team
+            </TextBlock>
+        </ScrollViewer>
 
         <Image Source="Images/careBeer2.0.png"
                Margin="10"

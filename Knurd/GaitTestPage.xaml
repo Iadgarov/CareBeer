@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
 
             <RowDefinition Height="*" />
-            <RowDefinition Height="3*" />
+            <RowDefinition Height="4*" />
 
 
 
@@ -32,8 +32,8 @@
                  FontSize="80"
                  Background="#FFE8831D"
                  Grid.Row="1"
-                 Width="300"
-                 Height="300"
+                 Width="280"
+                 Height="280"
                  Foreground="White"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Top"

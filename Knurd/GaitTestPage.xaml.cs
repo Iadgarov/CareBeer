@@ -99,12 +99,14 @@ namespace CareBeer
             start = true;
             startStopButton.Content = "Go!";
 			startStopButton.IsEnabled = true;
+            instructions.Visibility = Visibility.Visible;
         }
 
         private void stopMode()
         {
             start = false;
             startStopButton.Content = "Stop";
+            instructions.Visibility = Visibility.Collapsed;
         }
 
         private async void noAccMessage()
