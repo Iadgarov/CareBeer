@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using CareBeer.Tests;
 using Windows.UI.Core;
+using System.Text;
 
 namespace CareBeer
 {
@@ -65,29 +66,38 @@ namespace CareBeer
                 Debug.WriteLine("no accleromerter!");
                 //tester.AccVm = new AccelerometerViewModel();
                 noAccMessage();
-
+                return;
             }
 
 
             tester.AccVm = new AccelerometerViewModel();
             DataContext = tester.AccVm;
 
+            beginMessage();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            tester.AccVm.Stop(true); // stop prematurly
+            tester.AccVm?.Stop(true); // stop prematurly
 
             Frame.BackStack.Clear();
         }
 
 
+        private async void beginMessage()
+        {
+            MessageDialog m = new MessageDialog("This is the gait analysis test.\nWhen you're ready, press the button and start walking as usual. After approximately 40 steps of normal walking, stop and press the button again.");
+            m.Commands.Add(new UICommand("Got it!"));
+            await m.ShowAsync();
+
+        }
+
 
         private void startMode()
         {
             start = true;
-            startStopButton.Content = "Start";
+            startStopButton.Content = "Go!";
 			startStopButton.IsEnabled = true;
         }
 

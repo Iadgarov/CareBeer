@@ -3,6 +3,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -70,6 +71,7 @@ namespace CareBeer
             //SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             SystemNavigationManager.GetForCurrentView().BackRequested += App.App_BackRequested;
 
+            
             if (args.PreviousExecutionState == ApplicationExecutionState.Terminated ||
                     args.PreviousExecutionState == ApplicationExecutionState.ClosedByUser)
             {
@@ -85,6 +87,21 @@ namespace CareBeer
                 
 
                 rootFrame.Navigate(typeof(EntryPage), user);
+            }
+            else if (args.PreviousExecutionState == ApplicationExecutionState.NotRunning)
+            {
+                IPropertySet localProperties = ApplicationData.Current.LocalSettings.Values;
+                if (localProperties.ContainsKey("FirstUse"))
+                {
+                    // The normal case
+                    rootFrame.Navigate(typeof(EntryPage), args.Arguments);
+                }
+                else
+                {
+                    // The first-time case
+                    rootFrame.Navigate(typeof(AboutPage), true);
+                    localProperties["FirstUse"] = bool.FalseString;
+                }
             }
             else
             {

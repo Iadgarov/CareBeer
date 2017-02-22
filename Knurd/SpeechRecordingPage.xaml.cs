@@ -73,7 +73,7 @@ namespace CareBeer
 
         private async void beginMessage()
         {
-            MessageDialog m = new MessageDialog("Begin recording when ready.");
+            MessageDialog m = new MessageDialog("This is the speech analysis test.\nWhen you're ready, press the button and read the displayed text aloud. When finished, stop the recording.");
             m.Commands.Add(new UICommand("OK"));
             await m.ShowAsync();
            
@@ -322,14 +322,13 @@ namespace CareBeer
 
         private async Task summaryMessage()
         {
-            string s = "";
-            s += "pause length mean: " + tester.vadAnalyzer.PauseLengthMean + "\n";
-            s += "pause length variance: " + tester.vadAnalyzer.PauseLengthVariance + "\n\n";
-            s += "speech length mean: " + tester.vadAnalyzer.SpeechLengthMean + "\n";
-            s += "speech length variance: " + tester.vadAnalyzer.SpeechLengthVariance + "\n";
+            //string s = "";
+            //s += "pause length mean: " + tester.vadAnalyzer.PauseLengthMean + "\n";
+            //s += "pause length variance: " + tester.vadAnalyzer.PauseLengthVariance + "\n\n";
+            //s += "speech length mean: " + tester.vadAnalyzer.SpeechLengthMean + "\n";
+            //s += "speech length variance: " + tester.vadAnalyzer.SpeechLengthVariance + "\n";
 
-            MessageDialog m = new MessageDialog(s);
-            m.Title = "Results";
+            MessageDialog m = new MessageDialog("Very nice!");
             m.Commands.Add(new UICommand("Next"));
             m.Commands.Add(new UICommand("Redo"));
 

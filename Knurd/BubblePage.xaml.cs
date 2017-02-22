@@ -12,7 +12,8 @@ using Windows.Devices.Sensors;
 using Windows.Foundation;
 using Windows.UI.Core;
 using CareBeer.Tests;
-//using System.Threading;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CareBeer
 {
@@ -61,7 +62,7 @@ namespace CareBeer
             Frame.BackStack.Clear();
         }
 
-        private void begin()
+        private async void begin()
         {
 
             acc_energy = tester.accelEnergy;
@@ -75,7 +76,7 @@ namespace CareBeer
 			dTimer = new DispatcherTimer();
 			dTimer.Tick += tickTock;
 			dTimer.Interval = new TimeSpan(0, 0, 1);
-			dTimer.Start();
+			
 
 			_gyrometer = Gyrometer.GetDefault();
             if (_gyrometer != null)
@@ -97,7 +98,8 @@ namespace CareBeer
             }
             else
             {
-                beginMessage();
+                await beginMessage();
+                dTimer.Start();
             }
         }
 
@@ -167,7 +169,7 @@ namespace CareBeer
         private async void summaryMessage()
         {
             MessageDialog m = new MessageDialog("Well done.");
-            m.Commands.Add(new UICommand("Finish"));
+            m.Commands.Add(new UICommand("Next"));
             m.Commands.Add(new UICommand("Redo"));
 
             IUICommand r = null;
@@ -185,7 +187,7 @@ namespace CareBeer
                 return;
             }
 
-            if (r.Label == "Finish")
+            if (r.Label == "Next")
             {
                 tester.Finished(false);
             }
@@ -197,10 +199,10 @@ namespace CareBeer
         }
 
 
-        private async void beginMessage()
+        private async Task beginMessage()
         {
-            MessageDialog m = new MessageDialog("Try to keep the wild dot in the center for " + done + " seconds.");
-            m.Commands.Add(new UICommand("Ok"));
+            MessageDialog m = new MessageDialog("This is the stability test.\nTry to keep the wild dot in the center for " + done + " seconds. Keep your hand as steady as possible.\nReady?");
+            m.Commands.Add(new UICommand("Ready!"));
             await m.ShowAsync();
 
         }

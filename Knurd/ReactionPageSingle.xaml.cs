@@ -91,9 +91,7 @@ namespace CareBeer
 
 		private async Task summaryMessage()
 		{
-			string s = "";
-			s += "reaction time mean: " + tester.ReactionTimeMean + "mSec \n";
-			s += "reaction time variance: " + tester.ReactionTimeVar + "\n";
+			string s = "Your average reaction time was: " + (tester.ReactionTimeMean / 1000) + " seconds\n";
 
 			MessageDialog m = new MessageDialog(s);
 			m.Title = "Results";
@@ -122,8 +120,8 @@ namespace CareBeer
 
 		private async void beginMessage()
         {
-            MessageDialog m = new MessageDialog("When the screen flashes you must press the button. Ready?");
-            m.Commands.Add(new UICommand("Yes!"));
+            MessageDialog m = new MessageDialog("This is a pure reaction time test. Whenever the screen flashes, quickly press the button. Ready?");
+            m.Commands.Add(new UICommand("Aye aye captain!"));
             await m.ShowAsync();
             flash();
 
@@ -171,14 +169,6 @@ namespace CareBeer
             Debug.WriteLine("flashing " + b.Name + ". color: " + temp.Color.ToString());
             screenFlash(temp.Color.A, temp.Color.R, temp.Color.G, temp.Color.B);
             
-        }
-
-        
-
-   
-        private void getSoberData()
-        {
-            //TODO: method that gets list of data from cloud to be compared to. 
         }
 
         

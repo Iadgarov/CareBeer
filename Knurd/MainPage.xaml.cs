@@ -64,7 +64,7 @@ namespace CareBeer
         {
             MessageDialog m = new MessageDialog("This is the first use of the app by this user. Please complete the following tests when sober to create your basline.");
             m.Commands.Add(new UICommand("OK"));
-            m.Commands.Add(new UICommand("No Thanks"));
+            m.Commands.Add(new UICommand("Not now"));
             var r = await m.ShowAsync();
             if (r != null && r.Label == "OK")
             {
@@ -106,14 +106,24 @@ namespace CareBeer
             }
         }
 
-        private void settings_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(SettingsPage));
-        }
+        //private void settings_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.Frame.Navigate(typeof(SettingsPage));
+        //}
 
         private void testListBtn_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(TestSelectorPage));
+        }
+
+        private void switchUser_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(EntryPage));
+        }
+
+        private void about_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(AboutPage), false);
         }
 
 

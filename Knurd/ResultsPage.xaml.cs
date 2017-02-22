@@ -45,15 +45,19 @@ namespace CareBeer
         private void setResultsText(Results res)
         {
             int fails = countFails(res);
-            if (fails >= 2)
+            if (fails > 3)
             {
-                resultSumation.Text = countFails(res) + " Tests Failed. You're Drunk!";
+                resultSumation.Text = countFails(res) + " Tests Failed. You're drunk!";
             }
-            else
+            else if (fails < 2)
             {
                 resultSumation.Text = countFails(res) + " Tests Failed. You may be alright.";
             }
-            
+            else
+            {
+                resultSumation.Text = countFails(res) + " Tests Failed. You're probably a little tipsy.";
+            }
+
 
             gaitTestResult.Text = "Gait Test - " + res.GaitResult.ToString();
             bubbleTestResult.Text = "Bubble Test - " + res.BubbleResult.ToString();
